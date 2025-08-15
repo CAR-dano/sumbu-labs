@@ -68,7 +68,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-500 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-backgroundprimary transition-opacity duration-500 ${
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
     >
