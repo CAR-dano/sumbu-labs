@@ -1,22 +1,65 @@
 import type { Metadata } from "next";
-import { Roboto, Rubik } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
+const roboto = localFont({
+  src: [
+    {
+      path: "../assets/fonts/Roboto/static/Roboto-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Roboto/static/Roboto-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Roboto/static/Roboto-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Roboto/static/Roboto-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-roboto",
-  subsets: ["latin"],
   display: "swap",
-  preload: true,
   fallback: ["system-ui", "arial"],
 });
 
-const rubik = Rubik({
-  weight: ["300", "400", "500", "600", "700"],
+const rubik = localFont({
+  src: [
+    {
+      path: "../assets/fonts/Rubik/static/Rubik-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Rubik/static/Rubik-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Rubik/static/Rubik-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Rubik/static/Rubik-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Rubik/static/Rubik-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-rubik",
-  subsets: ["latin"],
   display: "swap",
-  preload: true,
   fallback: ["system-ui", "arial"],
 });
 
