@@ -1,25 +1,14 @@
-version: "3.8"
+version: "3.9"
 
 services:
-  sumbu-labs:
+  nextjs-app:
+    container_name: sumbu-labs
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
     environment:
-      - NODE_ENV=production
-      - PORT=5000
-      - HOSTNAME=0.0.0.0
+      NODE_ENV: production
+      PORT: 5000
     restart: unless-stopped
-    container_name: sumbu-labs-app
-    networks:
-      - sumbu-labs-network
-
-networks:
-  sumbu-labs-network:
-    driver: bridge
-
-volumes:
-  sumbu-labs-data:
-    driver: local
