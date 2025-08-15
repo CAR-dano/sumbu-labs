@@ -10,12 +10,16 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=5000
+      - HOSTNAME=0.0.0.0
     restart: unless-stopped
-    volumes:
-      - ./public:/app/public:ro
+    container_name: sumbu-labs-app
     networks:
-      - sumbu-network
+      - sumbu-labs-network
 
 networks:
-  sumbu-network:
+  sumbu-labs-network:
     driver: bridge
+
+volumes:
+  sumbu-labs-data:
+    driver: local
