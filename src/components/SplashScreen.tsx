@@ -68,9 +68,13 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-backgroundprimary transition-opacity duration-500 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ${
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
+      style={{
+        background: "rgba(1, 10, 23, 0.8)", // Semi-transparent background
+        backdropFilter: "blur(2px)",
+      }}
     >
       <div className="relative w-full h-full flex items-center justify-center">
         <video
@@ -78,7 +82,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-auto object-contain md:w-full md:h-full md:object-cover"
           onLoadedData={() => console.log("Video loaded")}
         >
           <source src="/assets/video/sumbulabanim.mp4" type="video/mp4" />
@@ -89,15 +93,15 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         {canSkip && (
           <button
             onClick={handleSkip}
-            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors duration-200 text-sm font-medium px-4 py-2 rounded-full border border-white/30 hover:border-white/60 backdrop-blur-sm"
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white transition-colors duration-200 text-xs md:text-sm font-medium px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/30 hover:border-white/60 backdrop-blur-sm"
           >
             Skip
           </button>
         )}
 
-        {/* Skip instruction */}
+        {/* Skip instruction - only show on desktop */}
         {canSkip && (
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white/60 text-sm text-center">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/60 text-sm text-center px-4 hidden md:block">
             Press SPACE, ENTER, or ESC to skip
           </div>
         )}

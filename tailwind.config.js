@@ -13,6 +13,7 @@ module.exports = {
       },
       colors: {
         backgroundprimary: "#010A17",
+        backgroundsecondary: "#0A1320",
       },
       animation: {
         "gradient-shift": "gradientShift 3s ease-in-out infinite",

@@ -1,3 +1,4 @@
+"use client";
 import React, { useCallback, useEffect, useRef } from "react";
 import gsap from "gsap";
 
@@ -55,14 +56,14 @@ const Cubes: React.FC<CubesProps> = ({
     typeof cellGap === "number"
       ? `${cellGap}px`
       : (cellGap as Gap)?.col !== undefined
-        ? `${(cellGap as Gap).col}px`
-        : "5%";
+      ? `${(cellGap as Gap).col}px`
+      : "5%";
   const rowGap =
     typeof cellGap === "number"
       ? `${cellGap}px`
       : (cellGap as Gap)?.row !== undefined
-        ? `${(cellGap as Gap).row}px`
-        : "5%";
+      ? `${(cellGap as Gap).row}px`
+      : "5%";
 
   const enterDur = duration.enter;
   const leaveDur = duration.leave;
@@ -137,14 +138,14 @@ const Cubes: React.FC<CubesProps> = ({
 
   const onTouchMove = useCallback(
     (e: TouchEvent) => {
-      e.preventDefault(); 
+      e.preventDefault();
       userActiveRef.current = true;
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
 
       const rect = sceneRef.current!.getBoundingClientRect();
       const cellW = rect.width / gridSize;
       const cellH = rect.height / gridSize;
-      
+
       const touch = e.touches[0];
       const colCenter = (touch.clientX - rect.left) / cellW;
       const rowCenter = (touch.clientY - rect.top) / cellH;
@@ -176,13 +177,15 @@ const Cubes: React.FC<CubesProps> = ({
       const rect = sceneRef.current.getBoundingClientRect();
       const cellW = rect.width / gridSize;
       const cellH = rect.height / gridSize;
-      
+
       // 터치와 마우스 모두 지원
-      const clientX = (e as MouseEvent).clientX || 
-                     ((e as TouchEvent).touches && (e as TouchEvent).touches[0].clientX);
-      const clientY = (e as MouseEvent).clientY || 
-                     ((e as TouchEvent).touches && (e as TouchEvent).touches[0].clientY);
-      
+      const clientX =
+        (e as MouseEvent).clientX ||
+        ((e as TouchEvent).touches && (e as TouchEvent).touches[0].clientX);
+      const clientY =
+        (e as MouseEvent).clientY ||
+        ((e as TouchEvent).touches && (e as TouchEvent).touches[0].clientY);
+
       const colHit = Math.floor((clientX - rect.left) / cellW);
       const rowHit = Math.floor((clientY - rect.top) / cellH);
 
@@ -271,20 +274,20 @@ const Cubes: React.FC<CubesProps> = ({
     el.addEventListener("pointermove", onPointerMove);
     el.addEventListener("pointerleave", resetAll);
     el.addEventListener("click", onClick);
-    
+
     el.addEventListener("touchmove", onTouchMove, { passive: false });
     el.addEventListener("touchstart", onTouchStart, { passive: true });
     el.addEventListener("touchend", onTouchEnd, { passive: true });
-    
+
     return () => {
       el.removeEventListener("pointermove", onPointerMove);
       el.removeEventListener("pointerleave", resetAll);
       el.removeEventListener("click", onClick);
-      
+
       el.removeEventListener("touchmove", onTouchMove);
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchend", onTouchEnd);
-      
+
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
@@ -318,7 +321,7 @@ const Cubes: React.FC<CubesProps> = ({
 
   return (
     <div
-      className="relative w-1/2 max-md:w-11/12 aspect-square"
+      className="relative w-full max-md:w-11/12 aspect-square"
       style={wrapperStyle}
     >
       <div ref={sceneRef} className="grid w-full h-full" style={sceneStyle}>

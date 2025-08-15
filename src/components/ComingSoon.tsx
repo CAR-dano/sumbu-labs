@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 
 const ComingSoon = () => {
@@ -18,11 +19,12 @@ const ComingSoon = () => {
 
   return (
     <div
-      className={`w-full min-h-screen bg-backgroundprimary flex items-center justify-center fixed inset-0 transition-all duration-1000 ease-out ${
+      className={`flex items-center justify-center transition-all duration-1000 ease-out pointer-events-none ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
-      <div className="text-center px-6 relative">
+      <div className="text-center px-6 relative z-10 pointer-events-none max-w-4xl mx-auto">
+        {/* Content remains the same */}
         <h1
           className={`text-6xl md:text-8xl font-bold mb-8 font-roboto transition-all duration-1000 ease-out transform ${
             showContent
