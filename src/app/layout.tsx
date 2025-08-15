@@ -7,6 +7,7 @@ const roboto = Roboto({
   subsets: ["latin"],
   display: "swap",
   preload: true,
+  fallback: ["system-ui", "arial"],
 });
 
 const rubik = Rubik({
@@ -14,6 +15,7 @@ const rubik = Rubik({
   subsets: ["latin"],
   display: "swap",
   preload: true,
+  fallback: ["system-ui", "arial"],
 });
 
 export const metadata: Metadata = {

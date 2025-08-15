@@ -13,7 +13,10 @@ RUN npm ci --only=production
 # Copy the rest of the application code
 COPY . .
 
-# Build the Next.js application
+# Set environment variables for build
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Build the Next.js application with proper network settings
 RUN npm run build
 
 # Expose the port the app runs on
