@@ -3,6 +3,7 @@ import { Roboto, Rubik } from "next/font/google";
 import "./globals.css";
 
 const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
   variable: "--font-roboto",
   subsets: ["latin"],
   display: "swap",
@@ -11,6 +12,7 @@ const roboto = Roboto({
 });
 
 const rubik = Rubik({
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-rubik",
   subsets: ["latin"],
   display: "swap",
