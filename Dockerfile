@@ -1,0 +1,35 @@
+# Use the official Node.js latest LTS image as base
+FROM node:lts-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json (if available)
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the Next.js application
+RUN npm run build
+
+# Expose the port the app runs on
+EXPOSE 5000
+
+# Set environment to production
+ENV NODE_ENV=production
+ENV PORT=5000
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+# Change ownership of the app directory to nextjs user
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Start the application
+CMD ["npm", "start"]

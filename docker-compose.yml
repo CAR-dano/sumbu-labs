@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  sumbu-labs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+    restart: unless-stopped
+    volumes:
+      - ./public:/app/public:ro
+    networks:
+      - sumbu-network
+
+networks:
+  sumbu-network:
+    driver: bridge
