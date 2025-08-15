@@ -4,11 +4,17 @@ FROM node:lts-alpine
 # Set working directory
 WORKDIR /app
 
+# Configure npm for better network handling
+RUN npm config set fetch-timeout 600000 && \
+    npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000 && \
+    npm config set fetch-retries 3
+
 # Copy package.json and package-lock.json (if available)
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install dependencies with increased timeout and retries
+RUN npm install --omit=dev --verbose
 
 # Copy the rest of the application code
 COPY . .
