@@ -5,6 +5,11 @@ import SplashScreen from "../components/SplashScreen";
 import ComingSoon from "../components/ComingSoon";
 import Cubes from "@/components/ReactBits/Cubes/Cubes";
 import Background from "@/components/Background";
+import { Navigation } from "@/components/LandingPage/Navigation";
+import Hero from "@/components/LandingPage/Hero";
+import Slogan from "@/components/LandingPage/Slogan";
+import Partner from "@/components/LandingPage/Partner";
+import MagicBento from "@/components/ReactBits/MagicBento/MagicBento";
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -30,22 +35,18 @@ export default function Home() {
   return (
     <>
       {/* Background Layer - Always present */}
-      <Background />
+      {/* <Background /> */}
 
-      {/* Content Layer */}
-      <div className="relative overflow-hidden">
-        {showSplash && (
-          <SplashScreen onComplete={handleSplashComplete} duration={4000} />
-        )}
+      {showSplash && (
+        <SplashScreen onComplete={handleSplashComplete} duration={4000} />
+      )}
 
-        {!showSplash && (
-          <>
-            {/* Coming Soon Section - Full screen height */}
-            <div className="min-h-screen flex items-center justify-center relative ">
-              <ComingSoon />
-            </div>
-          </>
-        )}
+      <Navigation />
+      <div className="">
+        <Hero />
+        <Slogan />
+        <Partner />
+        <MagicBento />
       </div>
     </>
   );
