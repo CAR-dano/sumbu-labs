@@ -22,20 +22,17 @@ const Partner = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center my-10">
+      <div className="flex flex-col md:flex-row items-center justify-center my-10 ">
         {ListPartner.map((partner, index) => (
           <div key={index} className="flex flex-col items-center mx-4">
-            <h3 className="text-center">{partner.name}</h3>
             <img
               src={partner.image}
               alt={partner.name}
-              className="w-auto h-16"
+              className="w-3/4 md:w-auto h-16 md:h-24 object-contain space-y-2"
             />
           </div>
         ))}
       </div>
-
-      <h1 className="services px-32">Our Services</h1>
     </>
   );
 };

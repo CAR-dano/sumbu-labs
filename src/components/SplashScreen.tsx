@@ -100,11 +100,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         )}
 
         {/* Skip instruction - only show on desktop */}
-        {canSkip && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/60 text-sm text-center px-4 hidden md:block">
-            Press SPACE, ENTER, or ESC to skip
-          </div>
-        )}
       </div>
     </div>
   );

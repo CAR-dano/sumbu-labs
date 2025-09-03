@@ -1,11 +1,13 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { gsap } from "gsap";
+import MetaBalls from "../MetaBalls/MetaBalls";
 
 export interface BentoCardProps {
   color?: string;
   title?: string;
   description?: string;
   label?: string;
+  logoSrc?: string;
   textAutoHide?: boolean;
   disableAnimations?: boolean;
 }
@@ -32,39 +34,46 @@ const MOBILE_BREAKPOINT = 768;
 const cardData: BentoCardProps[] = [
   {
     color: "#060010",
-    title: "Analytics",
-    description: "Track user behavior",
-    label: "Insights",
+    title: "Web2-Web3 Integration",
+    description:
+      "Connect systems with wallets, smart contracts, on-chain data.",
+    label: "Web2-Web3 Integration",
+    logoSrc: "/assets/icon/web3.svg",
   },
   {
     color: "#060010",
-    title: "Dashboard",
-    description: "Centralized data view",
-    label: "Overview",
+    title: "Custom Web Development",
+    description: "Scalable, secure web apps tailored to your business.",
+    label: "Custom Web Development",
+    logoSrc: "/assets/icon/web.svg",
   },
   {
     color: "#060010",
-    title: "Collaboration",
-    description: "Work together seamlessly",
-    label: "Teamwork",
+    title: "Custom Mobile App Development",
+    description: "Cross-platform apps with native performance and UX.",
+    label: "Custom Mobile App Development",
+    logoSrc: "/assets/icon/app.svg",
   },
   {
     color: "#060010",
-    title: "Automation",
-    description: "Streamline workflows",
-    label: "Efficiency",
+    title: "AI & Data Solutions",
+    description: "LLMs, vision, forecasting—productionized with MLOps.",
+    label: "AI & Data Solutions ",
+    logoSrc: "/assets/icon/ai.svg",
   },
   {
     color: "#060010",
-    title: "Integration",
-    description: "Connect favorite tools",
-    label: "Connectivity",
+    title: "System Integration & Automation",
+    description: "Robust APIs, orchestration, and CI/CD to streamline ops.",
+    label: "System Integration & Automation",
+    logoSrc: "/assets/icon/system.svg",
   },
   {
     color: "#060010",
-    title: "Security",
-    description: "Enterprise-grade protection",
-    label: "Protection",
+    title: "UI/UX Design",
+    description: "Research-driven interfaces and consistent design systems.",
+    label: "UI/UX Design",
+    logoSrc: "/assets/icon/ui.svg",
   },
 ];
 
@@ -531,7 +540,7 @@ const BentoCardGrid: React.FC<{
   gridRef?: React.RefObject<HTMLDivElement | null>;
 }> = ({ children, gridRef }) => (
   <div
-    className="bento-section grid gap-2 p-3 w-full select-none relative px-32"
+    className="bento-section grid gap-2 p-3 w-full select-none relative  lg:px-32 px-8"
     style={{ fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.5rem)" }}
     ref={gridRef}
   >
@@ -591,37 +600,11 @@ const MagicBento: React.FC<BentoProps> = ({
           }
           
           .card-responsive {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
             width: 100%;
             margin: 0 auto;
             padding: 0.5rem;
-          }
-          
-          @media (min-width: 600px) {
-            .card-responsive {
-              grid-template-columns: repeat(2, 1fr);
-            }
-          }
-          
-          @media (min-width: 1024px) {
-            .card-responsive {
-              grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .card-responsive .card:nth-child(3) {
-              grid-column: span 2;
-              grid-row: span 2;
-            }
-            
-            .card-responsive .card:nth-child(4) {
-              grid-column: 1 / span 2;
-              grid-row: 2 / span 2;
-            }
-            
-            .card-responsive .card:nth-child(6) {
-              grid-column: 4;
-              grid-row: 3;
-            }
           }
           
           .card--border-glow::after {
@@ -685,9 +668,10 @@ const MagicBento: React.FC<BentoProps> = ({
             text-overflow: ellipsis;
           }
           
-          @media (max-width: 599px) {
+          @media (max-width: 768px) {
             .card-responsive {
               grid-template-columns: 1fr;
+              grid-template-rows: auto;
               width: 90%;
               margin: 0 auto;
               padding: 0.5rem;
@@ -712,9 +696,9 @@ const MagicBento: React.FC<BentoProps> = ({
       )}
 
       <BentoCardGrid gridRef={gridRef}>
-        <div className="card-responsive grid gap-2">
+        <div className="card-responsive grid gap-2 relative z-10">
           {cardData.map((card, index) => {
-            const baseClassName = `card flex flex-col justify-between relative aspect-[4/3] min-h-[200px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
+            const baseClassName = `card flex flex-col relative  min-h-[200px] w-full max-w-full p-8  rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
               enableBorderGlow ? "card--border-glow" : ""
             }`;
 
@@ -741,19 +725,23 @@ const MagicBento: React.FC<BentoProps> = ({
                   clickEffect={clickEffect}
                   enableMagnetism={enableMagnetism}
                 >
-                  <div className="card__header flex justify-between gap-3 relative text-white">
-                    <span className="card__label text-base">{card.label}</span>
+                  <div className="card__header flex items-start justify-start mb-4 relative text-white">
+                    <div className="card__logo rounded-lg  backdrop-blur-sm w-12 h-12 flex items-center justify-center">
+                      <img
+                        src={card.logoSrc}
+                        alt={card.label}
+                        className="w-12 h-12 object-contain"
+                      />
+                    </div>
                   </div>
-                  <div className="card__content flex flex-col relative text-white">
+                  <div className="card__content flex flex-col justify-end  relative text-white">
                     <h3
-                      className={`card__title font-normal text-base m-0 mb-1 ${
-                        textAutoHide ? "text-clamp-1" : ""
-                      }`}
+                      className={`w-3/4 font-rubik card__title font-semibold text-[24px] m-0 mt-4 mb-2 leading-tight`}
                     >
                       {card.title}
                     </h3>
                     <p
-                      className={`card__description text-xs leading-5 opacity-90 ${
+                      className={`font-rubik  card__description text-[16px] leading-relaxed opacity-80 ${
                         textAutoHide ? "text-clamp-2" : ""
                       }`}
                     >
@@ -879,19 +867,23 @@ const MagicBento: React.FC<BentoProps> = ({
                   el.addEventListener("click", handleClick);
                 }}
               >
-                <div className="card__header flex justify-between gap-3 relative text-white">
-                  <span className="card__label text-base">{card.label}</span>
+                <div className="card__header flex items-start justify-start mb-4 relative text-white">
+                  <div className="card__logo  rounded-lg p-2 backdrop-blur-sm w-12 h-12 flex items-center justify-center">
+                    <img
+                      src={card.logoSrc}
+                      alt={card.label}
+                      className="w-8 h-8 object-contain"
+                    />
+                  </div>
                 </div>
-                <div className="card__content flex flex-col relative text-white">
+                <div className="card__content flex flex-col justify-end flex-1 relative text-white">
                   <h3
-                    className={`card__title font-normal text-base m-0 mb-1 ${
-                      textAutoHide ? "text-clamp-1" : ""
-                    }`}
+                    className={`card__title font-semibold text-lg m-0 mb-2 leading-tight`}
                   >
                     {card.title}
                   </h3>
                   <p
-                    className={`card__description text-xs leading-5 opacity-90 ${
+                    className={`card__description text-sm leading-relaxed opacity-80 ${
                       textAutoHide ? "text-clamp-2" : ""
                     }`}
                   >

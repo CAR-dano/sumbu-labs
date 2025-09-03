@@ -28,6 +28,32 @@ body.splash-active {
 html {
   scroll-behavior: smooth;
   background-color: #010a17;
+  scroll-padding-top: 120px; /* Offset for fixed navbar */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-text {
+    line-height: 1.6 !important;
+    padding: 0 20px;
+  }
+
+  .gradient-text {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-text {
+    font-size: 18px !important;
+    line-height: 1.5 !important;
+    padding: 0 16px;
+  }
+
+  .gradient-text {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+  }
 }
 
 /* Prevent flash of unstyled content */
@@ -191,20 +217,22 @@ body {
   -webkit-text-fill-color: transparent;
 
   text-align: center;
-  font-size: 72px;
+  font-size: clamp(32px, 8vw, 72px);
   font-style: normal;
   font-weight: 400;
-  line-height: 90px; /* 114.583% */
+  line-height: clamp(40px, 10vw, 90px);
+  letter-spacing: clamp(-0.5px, -0.1vw, 0px);
 }
 
 .hero-text {
   color: #fff;
   text-align: center;
-  font-size: 24px;
+  font-size: clamp(16px, 4vw, 24px);
   font-style: normal;
   font-weight: 100;
-  line-height: 110px;
+  line-height: clamp(24px, 6vw, 64px);
   letter-spacing: 0.5px;
+  padding: 0 16px;
 
   span.highlight {
     font-weight: 600;
@@ -217,9 +245,10 @@ body {
 
 .btn-cta {
   display: flex;
-  padding: 16px 48px;
+  padding: clamp(12px, 3vw, 16px) clamp(24px, 6vw, 48px);
   justify-content: center;
   align-items: center;
+  min-width: 200px;
 
   border-radius: 100px;
   background: #6750a4;
@@ -232,20 +261,56 @@ body {
 
   /* M3/headline/large */
   font-family: var(--Static-Headline-Large-Font, Roboto);
-  font-size: var(--Static-Headline-Large-Size, 24px);
+  font-size: clamp(18px, 4vw, 24px);
   font-weight: 300;
+
+  /* Hover effects */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 3px 0 rgba(194, 140, 255, 0.3),
+    4px 4px 7px 0 rgba(194, 140, 255, 0.25),
+    6px 7px 15px 0 rgba(194, 140, 255, 0.15);
 }
 
 .btn-cta-2 {
   background: #6750a4;
   border-radius: 100%;
-  width: 64px;
-  height: 64px;
+  width: clamp(48px, 12vw, 64px);
+  height: clamp(48px, 12vw, 64px);
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: -10px;
+  margin-left: 0;
+
+  /* Hover effects */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-cta-2:hover {
+  transform: translateY(-2px);
+  box-shadow: 2px 2px 2px 0 rgba(194, 140, 255, 0.25),
+    3px 3px 5px 0 rgba(194, 140, 255, 0.2),
+    4px 5px 10px 0 rgba(194, 140, 255, 0.1);
+}
+
+/* Small screens adjustments */
+@media (max-width: 640px) {
+  .btn-cta-2 {
+    margin-left: 0 !important;
+  }
+}
+
+/* Medium screens and up */
+@media (min-width: 640px) {
+  .btn-cta-2 {
+    margin-left: -10px;
+  }
 }
 
 .we-are-sumbu {
@@ -281,6 +346,26 @@ body {
 
   text-align: left;
   font-family: Roboto;
+  font-size: 52px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110px; /* 114.583% */
+  letter-spacing: var(--Static-Body-Large-Tracking, 0.5px);
+}
+
+.services2 {
+  background: linear-gradient(
+    93deg,
+    #aa6afe -6.02%,
+    #debcff 51.58%,
+    #aa6afe 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-align: left;
+  font-family: Roboto;
   font-size: 48px;
   font-style: normal;
   font-weight: 400;
@@ -294,4 +379,49 @@ body {
   font-size: 18px;
   font-weight: 200;
   text-align: justify;
+}
+
+.try-text {
+  color: #939393;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 39px; /* 162.5% */
+  letter-spacing: 0.5px;
+  margin-top: -250px;
+}
+
+.btn-contact {
+  display: flex;
+  padding: 12px 32px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+  background: #6750a4;
+
+  /* Text/text purple */
+  box-shadow: 2px 2px 2px 0 rgba(194, 140, 255, 0.25),
+    3px 3px 5px 0 rgba(194, 140, 255, 0.2),
+    4px 5px 10px 0 rgba(194, 140, 255, 0.1);
+  color: var(--M3-sys-light-on-primary, var(--Schemes-On-Primary, #fff));
+
+  /* M3/headline/large */
+  font-family: var(--Static-Headline-Large-Font, Roboto);
+  font-size: var(--Static-Headline-Large-Size, 20px);
+  font-weight: 300;
+}
+
+.btn-contact-2 {
+  background: #6750a4;
+  border-radius: 100%;
+  width: 54px;
+  height: 54px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: -10px;
 }

@@ -10,6 +10,9 @@ import Hero from "@/components/LandingPage/Hero";
 import Slogan from "@/components/LandingPage/Slogan";
 import Partner from "@/components/LandingPage/Partner";
 import MagicBento from "@/components/ReactBits/MagicBento/MagicBento";
+import Services from "@/components/LandingPage/Services";
+import Team from "@/components/LandingPage/Team";
+import Footer from "@/components/LandingPage/Footer";
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -42,11 +45,13 @@ export default function Home() {
       )}
 
       <Navigation />
-      <div className="">
+      <div className="relative">
         <Hero />
         <Slogan />
         <Partner />
-        <MagicBento />
+        <Services />
+        <Team />
+        <Footer />
       </div>
     </>
   );

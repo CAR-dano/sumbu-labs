@@ -27,7 +27,7 @@ interface NavItemsProps {
     link: string;
   }[];
   className?: string;
-  onItemClick?: () => void;
+  onItemClick?: (e: React.MouseEvent<HTMLAnchorElement>, link: string) => void;
 }
 
 interface MobileNavProps {
@@ -126,7 +126,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
       {items.map((item, idx) => (
         <a
           onMouseEnter={() => setHovered(idx)}
-          onClick={onItemClick}
+          onClick={(e) => onItemClick?.(e, item.link)}
           className="relative px-4 py-2 text-[#C4C4C4] hover:text-[#010A17] transition "
           key={`link-${idx}`}
           href={item.link}
@@ -165,7 +165,7 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
       }}
       className={cn(
         "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-2 lg:hidden",
-        visible && "bg-white/80 dark:bg-neutral-950/80",
+        visible && "bg-neutral-950/80",
         className
       )}
     >
@@ -204,7 +204,7 @@ export const MobileNavMenu = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className={cn(
-            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-white px-4 py-8 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] dark:bg-neutral-950",
+            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-white px-4 py-8 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] bg-neutral-950",
             className
           )}
         >
@@ -223,9 +223,9 @@ export const MobileNavToggle = ({
   onClick: () => void;
 }) => {
   return isOpen ? (
-    <IconX className="text-black dark:text-white" onClick={onClick} />
+    <IconX className="text-white" onClick={onClick} />
   ) : (
-    <IconMenu2 className="text-black dark:text-white" onClick={onClick} />
+    <IconMenu2 className="text-white" onClick={onClick} />
   );
 };
 
@@ -245,23 +245,27 @@ export const NavbarLogo = () => {
   );
 };
 
-export const NavbarButton = ({
+type NavbarButtonProps<T extends React.ElementType> = {
+  as?: T;
+  href?: string;
+  children: React.ReactNode;
+  className?: string;
+  variant?: "primary" | "secondary" | "dark" | "gradient";
+} & Omit<
+  React.ComponentPropsWithoutRef<T>,
+  "as" | "children" | "className" | "variant" | "href"
+>;
+
+export const NavbarButton = <T extends React.ElementType = "a">({
   href,
-  as: Tag = "a",
+  as,
   children,
   className,
   variant = "primary",
   ...props
-}: {
-  href?: string;
-  as?: React.ElementType;
-  children: React.ReactNode;
-  className?: string;
-  variant?: "primary" | "secondary" | "dark" | "gradient";
-} & (
-  | React.ComponentPropsWithoutRef<"a">
-  | React.ComponentPropsWithoutRef<"button">
-)) => {
+}: NavbarButtonProps<T>) => {
+  const Tag = as || "a";
+
   const baseStyles =
     "font-roboto px-8 py-2 rounded-[100px] bg-[#6750A4] button text-white text-[20px] font-normal relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
 
@@ -274,13 +278,11 @@ export const NavbarButton = ({
       "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
   };
 
-  return (
-    <Tag
-      href={href || undefined}
-      className={cn(baseStyles, variantStyles[variant], className)}
-      {...props}
-    >
-      {children}
-    </Tag>
-  );
+  const tagProps = {
+    className: cn(baseStyles, variantStyles[variant], className),
+    ...(Tag === "a" && href ? { href } : {}),
+    ...props,
+  };
+
+  return React.createElement(Tag, tagProps, children);
 };
