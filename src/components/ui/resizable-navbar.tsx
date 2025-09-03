@@ -56,6 +56,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   });
   const [visible, setVisible] = useState<boolean>(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useMotionValueEvent(scrollY, "change", (latest: any) => {
     if (latest > 100) {
       setVisible(true);

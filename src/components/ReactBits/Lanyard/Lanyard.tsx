@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Canvas, extend, useFrame } from "@react-three/fiber";
@@ -31,7 +30,7 @@ const defaultGLBs = [
 
 // Default URLs for each lanyard - you can customize these
 const defaultURLs = [
-  "https://www.gigahidjrikaaa.my.id/gigzz", // Giga's profile
+  "https://www.gigahidjrikaaa.my.id", // Giga's profile
   "https://dzikran.sumbu.xyz", // Dzikran's profile
   "https://maul.sumbu.xyz", // Maul's profile
   "https://frhnn.my.id", // Farhan's profile (placeholder)
@@ -137,12 +136,17 @@ function Band({
   glbPath = defaultGLBs[0],
   url, // URL for this specific lanyard
 }: BandProps) {
-  // Using "any" for refs since the exact types depend on Rapier's internals
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const band = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const fixed = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const j1 = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const j2 = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const j3 = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const card = useRef<any>(null);
 
   const vec = new THREE.Vector3();
@@ -150,6 +154,7 @@ function Band({
   const rot = new THREE.Vector3();
   const dir = new THREE.Vector3();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const segmentProps: any = {
     type: "dynamic" as RigidBodyProps["type"],
     canSleep: true,
@@ -158,6 +163,7 @@ function Band({
     linearDamping: 4,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { nodes, materials } = useGLTF(glbPath) as any;
   const texture = useTexture(lanyard);
   const [curve] = useState(
@@ -355,6 +361,7 @@ function Band({
             position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onPointerUp={(e: any) => {
               e.target.releasePointerCapture(e.pointerId);
               const currentTime = Date.now();
@@ -370,6 +377,7 @@ function Band({
               setIsDragging(false);
               setMouseDownPosition(null);
             }}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onPointerDown={(e: any) => {
               e.target.setPointerCapture(e.pointerId);
               setMouseDownTime(Date.now());
@@ -382,6 +390,7 @@ function Band({
                   .sub(vec.copy(card.current.translation()))
               );
             }}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onPointerMove={(e: any) => {
               if (dragged && mouseDownPosition) {
                 const currentPos = { x: e.clientX, y: e.clientY };
