@@ -21,7 +21,7 @@ import * as THREE from "three";
 
 // replace with your own imports, see the usage snippet for details
 const defaultGLBs = [
-  "/assets/others/Giga.glb",
+  "/assets/others/giga.glb",
   "/assets/others/Dzikran.glb", // You can replace these with different GLB files
   "/assets/others/Maul.glb",
   "/assets/others/Farhan.glb",
