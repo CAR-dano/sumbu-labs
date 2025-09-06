@@ -72,7 +72,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
       style={{
-        background: "rgba(1, 10, 23, 0.8)", // Semi-transparent background
+        background: "#010A17", // Semi-transparent background
         backdropFilter: "blur(2px)",
       }}
     >

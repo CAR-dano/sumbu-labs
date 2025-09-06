@@ -33,7 +33,7 @@ const Hero = () => {
         <div className="relative z-20 flex flex-col items-center justify-center max-w-7xl mx-auto w-full">
           {/* Background overlay for better text readability */}
 
-          <div className="relative z-10 p-8 sm:p-12">
+          <div className="relative z-10 p-4 sm:p-12">
             <h1 className="gradient-text font-roboto text-center drop-shadow-lg">
               Aligning Your Ideas <br className="hidden sm:block" />
               <span className="sm:hidden"> </span>
@@ -46,9 +46,16 @@ const Hero = () => {
               <span className="highlight">execution</span> on the same plane.
             </p>
 
-            <div className="div-button flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-0 mt-8 sm:mt-12">
-              <button className="btn-cta w-full sm:w-auto shadow-lg">
-                View our work
+            <div className="div-button flex sm:flex-row items-center justify-center gap-0 mt-8 sm:mt-12 cursor-pointer pointer-events-auto">
+              <button
+                onClick={() => {
+                  document
+                    .getElementById("services")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="btn-cta w-full sm:w-auto shadow-lg"
+              >
+                View our services
               </button>
               <button className="btn-cta-2 sm:ml-[-10px] shadow-lg">
                 <MdKeyboardArrowDown
