@@ -32,7 +32,7 @@ const defaultGLBs = [
 const defaultURLs = [
   "https://www.gigahidjrikaaa.my.id", // Giga's profile
   "https://dzikran.sumbu.xyz", // Dzikran's profile
-  "https://maul.sumbu.xyz", // Maul's profile
+  "https://maulana.sumbu.xyz", // Maul's profile
   "https://frhnn.my.id", // Farhan's profile (placeholder)
   "https://azfar.sumbu.xyz", // Azfar's profile (placeholder)
 ];

@@ -29,7 +29,7 @@ const data = [
   {
     title: "Maul",
     src: "/assets/teams/maul.svg",
-    href: "https://maul.sumbu.xyz",
+    href: "https://maulana.sumbu.xyz",
   },
   {
     title: "Farhan",
