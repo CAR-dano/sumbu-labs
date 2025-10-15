@@ -1,6 +1,5 @@
 import React from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import DarkVeil from "../ReactBits/DarkVeil/DarkVeil";
 import GradientBlinds from "../ReactBits/GradientBlinds/GradientBlinds";
 
 const Hero = () => {

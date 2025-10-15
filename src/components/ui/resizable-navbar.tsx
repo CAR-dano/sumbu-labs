@@ -273,15 +273,16 @@ export const NavbarButton = <T extends React.ElementType = "a">({
   const Tag = as || "a";
 
   const baseStyles =
-    "font-roboto px-8 py-2 rounded-[100px] bg-[#6750A4] button text-white text-[20px] font-normal relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
+    "font-roboto px-6 py-2.5 rounded-full text-white text-base font-medium relative cursor-pointer transition-all duration-300 inline-block text-center whitespace-nowrap";
 
   const variantStyles = {
     primary:
-      "shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-    secondary: "bg-transparent shadow-none dark:text-white",
-    dark: "bg-black text-white shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
+      "bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105 active:scale-95",
+    secondary:
+      "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:scale-105 active:scale-95",
+    dark: "bg-neutral-900 text-white hover:bg-neutral-800 shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:scale-105 active:scale-95",
     gradient:
-      "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
+      "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 hover:shadow-lg hover:shadow-blue-500/50 hover:scale-105 active:scale-95",
   };
 
   const tagProps = {

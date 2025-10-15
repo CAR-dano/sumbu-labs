@@ -101,9 +101,18 @@ export function Navigation() {
           <div className="flex items-center gap-4">
             <NavbarButton
               onClick={(e) => handleNavClick(e, "#contact")}
-              variant="primary"
+              variant="secondary"
             >
               Say Hi!
+            </NavbarButton>
+            <NavbarButton
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = "/brief";
+              }}
+              variant="primary"
+            >
+              Start Project
             </NavbarButton>
           </div>
         </NavBody>
@@ -133,7 +142,24 @@ export function Navigation() {
               </a>
             ))}
             <div className="flex w-full flex-col gap-4">
-              <NavbarButton variant="primary">Say Hi!</NavbarButton>
+              <NavbarButton
+                variant="secondary"
+                onClick={(e) => {
+                  handleNavClick(e, "#contact");
+                }}
+              >
+                Say Hi!
+              </NavbarButton>
+              <NavbarButton
+                variant="primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = "/brief";
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Start Project
+              </NavbarButton>
             </div>
           </MobileNavMenu>
         </MobileNav>

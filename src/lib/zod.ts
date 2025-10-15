@@ -84,7 +84,72 @@ export const loginSchema = z.object({
 });
 
 export type ProjectInput = z.infer<typeof projectSchema>;
-export type ProjectUpdateInput = z.infer<typeof projectUpdateSchema>;
+export type ProjectCreateInput = z.infer<typeof projectCreateSchema>;
+
+// Brief Submission Schema
+const attachmentSchema = z.object({
+  url: z.string(),
+  name: z.string().max(255),
+  size: z.number().max(8 * 1024 * 1024), // 8MB
+  type: z.string(),
+});
+
+export const briefSubmissionSchema = z.object({
+  // Contact (required)
+  fullName: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name is too long"),
+  company: z.string().max(100).optional(),
+  email: z.string().email("Invalid email address").max(100),
+  phone: z.string().max(30).optional(),
+
+  // Project
+  projectTitle: z.string().max(200).optional(),
+  projectType: z
+    .array(z.string())
+    .min(1, "Select at least one project type")
+    .max(10),
+  goals: z
+    .string()
+    .min(5, "Please describe your goals (at least 5 characters)")
+    .max(2000, "Goals description is too long")
+    .optional(),
+  problems: z.string().max(2000).optional(),
+  scopeFeatures: z.array(z.string().max(200)).max(20).default([]),
+  platforms: z.array(z.string()).max(10).default([]),
+  integrations: z.array(z.string()).max(20).default([]),
+  references: z.array(z.string().url("Invalid URL")).max(10).default([]),
+  attachments: z.array(attachmentSchema).max(3).default([]),
+
+  // Business
+  budgetRange: z
+    .enum(["under-5k", "5-10k", "10-25k", "25-50k", "50-100k", "100k-plus"])
+    .optional(),
+  timeline: z.enum(["asap", "1-2 months", "3-6 months", "flexible"]).optional(),
+  startDateTarget: z.string().optional(), // ISO date string
+  locationTimezone: z.string().max(100).optional(),
+
+  // Privacy & Consent
+  ndaRequired: z.boolean().default(false),
+  acceptPolicy: z.boolean().refine((val) => val === true, {
+    message: "You must accept the privacy policy",
+  }),
+
+  // Honeypot (anti-spam)
+  website: z.string().max(0).optional(), // Should be empty
+});
+
+export const briefUpdateSchema = z.object({
+  status: z
+    .enum(["new", "reviewing", "replied", "qualified", "archived"])
+    .optional(),
+  starred: z.boolean().optional(),
+  internalNotes: z.string().max(5000).optional(),
+});
+
+export type BriefSubmissionInput = z.infer<typeof briefSubmissionSchema>;
+export type BriefUpdateInput = z.infer<typeof briefUpdateSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ImageData = z.infer<typeof imageSchema>;
 export type LinksData = z.infer<typeof linksSchema>;

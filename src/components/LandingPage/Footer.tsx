@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
 import { MdKeyboardArrowDown, MdOutlineMailOutline } from "react-icons/md";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
@@ -83,9 +84,12 @@ const Footer = () => {
               </span>
             </h1>
             <div className="div-button flex items-center justify-center">
-              <button className="btn-contact text-sm sm:text-base lg:text-xl px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-3">
-                Contact Us
-              </button>
+              <Link
+                href="/brief"
+                className="btn-contact text-sm sm:text-base lg:text-xl px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-3"
+              >
+                Start Your Project
+              </Link>
               <button className="btn-contact-2 w-10 h-10 sm:w-12 sm:h-12 lg:w-[54px] lg:h-[54px]">
                 <MdKeyboardArrowDown size={24} className="sm:hidden" />
                 <MdKeyboardArrowDown
