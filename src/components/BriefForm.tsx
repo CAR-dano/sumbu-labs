@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { useDraftStorage } from "@/hooks/use-draft-storage";
 import { User, Briefcase, DollarSign, Shield, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import DraftRestoreDialog from "@/components/DraftRestoreDialog";
+import DraftBadge from "@/components/DraftBadge";
 
 const STEPS = [
   { id: 1, name: "About You", icon: User },
@@ -42,7 +45,7 @@ const TIMELINE_OPTIONS = [
   { value: "flexible", label: "Flexible" },
 ];
 
-interface FormData {
+interface BriefFormData extends Record<string, unknown> {
   fullName: string;
   company: string;
   email: string;
@@ -65,7 +68,13 @@ export default function BriefForm() {
   const { toast } = useToast();
   const router = useRouter();
 
-  const [formData, setFormData] = useState<FormData>({
+  // Draft storage
+  const draftStorage = useDraftStorage<BriefFormData>();
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [showRestoreDialog, setShowRestoreDialog] = useState(false);
+  const [pendingDraft, setPendingDraft] = useState<ReturnType<typeof draftStorage.read> | null>(null);
+
+  const [formData, setFormData] = useState<BriefFormData>({
     fullName: "",
     company: "",
     email: "",
@@ -81,28 +90,75 @@ export default function BriefForm() {
     website: "",
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
+  const [errors, setErrors] = useState<Partial<Record<keyof BriefFormData, string>>>(
     {}
   );
 
-  // Save draft to localStorage
+  // Check for draft on mount
   useEffect(() => {
-    const draft = localStorage.getItem("briefDraft");
+    const draft = draftStorage.read();
     if (draft) {
-      try {
-        setFormData(JSON.parse(draft));
-      } catch (e) {
-        console.error("Failed to load draft:", e);
-      }
+      setPendingDraft(draft);
+      setShowRestoreDialog(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Auto-save with debouncing
   useEffect(() => {
-    localStorage.setItem("briefDraft", JSON.stringify(formData));
-  }, [formData]);
+    if (!draftStorage.isEnabled) return;
+
+    const timeoutId = setTimeout(() => {
+      setSaveStatus("saving");
+      draftStorage.write(formData, currentStep);
+      setSaveStatus("saved");
+      
+      // Show brief toast
+      toast({
+        title: "Draft saved",
+        description: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        duration: 2000,
+      });
+    }, 800); // 800ms debounce
+
+    return () => clearTimeout(timeoutId);
+  }, [formData, currentStep, draftStorage, toast]);
+
+  const handleRestoreDraft = useCallback(() => {
+    if (pendingDraft) {
+      setFormData(pendingDraft.data);
+      setCurrentStep(pendingDraft.step);
+      setShowRestoreDialog(false);
+      setPendingDraft(null);
+      toast({
+        title: "Draft restored",
+        description: "Your previous work has been restored.",
+      });
+    }
+  }, [pendingDraft, toast]);
+
+  const handleDiscardDraft = useCallback(() => {
+    draftStorage.clear();
+    setShowRestoreDialog(false);
+    setPendingDraft(null);
+    toast({
+      title: "Draft discarded",
+      description: "Starting with a fresh form.",
+    });
+  }, [draftStorage, toast]);
+
+  const handleSaveNow = useCallback(() => {
+    setSaveStatus("saving");
+    draftStorage.write(formData, currentStep);
+    setSaveStatus("saved");
+    toast({
+      title: "Draft saved manually",
+      description: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    });
+  }, [draftStorage, formData, currentStep, toast]);
 
   const updateField = (
-    field: keyof FormData,
+    field: keyof BriefFormData,
     value: string | boolean | string[]
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -118,7 +174,7 @@ export default function BriefForm() {
   };
 
   const validateStep = (step: number): boolean => {
-    const newErrors: Partial<Record<keyof FormData, string>> = {};
+    const newErrors: Partial<Record<keyof BriefFormData, string>> = {};
 
     if (step === 1) {
       if (!formData.fullName.trim()) newErrors.fullName = "Name is required";
@@ -196,7 +252,9 @@ export default function BriefForm() {
         throw new Error(result.error || "Submission failed");
       }
 
-      localStorage.removeItem("briefDraft");
+      // Clear draft on success
+      draftStorage.clear();
+      
       toast({
         title: "Success!",
         description: "Your project brief has been submitted successfully.",
@@ -217,6 +275,22 @@ export default function BriefForm() {
 
   return (
     <div className="min-h-screen bg-[#0b0f1a] relative">
+      {/* Draft Restore Dialog */}
+      <DraftRestoreDialog
+        isOpen={showRestoreDialog}
+        draftAge={pendingDraft?.updatedAt || Date.now()}
+        onRestore={handleRestoreDraft}
+        onDiscard={handleDiscardDraft}
+      />
+
+      {/* Draft Badge */}
+      <DraftBadge
+        status={saveStatus}
+        lastSaved={draftStorage.lastSaved}
+        onSaveNow={handleSaveNow}
+        onDiscard={handleDiscardDraft}
+      />
+
       {/* Ambient Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[10%] right-[5%] w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[150px] animate-pulse" />
@@ -597,6 +671,23 @@ export default function BriefForm() {
                 {errors.acceptPolicy && (
                   <p className="text-red-400 text-sm">{errors.acceptPolicy}</p>
                 )}
+
+                {/* Remember Device Toggle */}
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/10">
+                  <div className="flex-1">
+                    <Label className="text-gray-300 font-medium">
+                      Remember this device
+                    </Label>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Auto-save your progress as you type. Drafts expire after 30 days.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={draftStorage.isEnabled}
+                    onCheckedChange={draftStorage.setIsEnabled}
+                    className="ml-4"
+                  />
+                </div>
               </div>
             </div>
           )}
