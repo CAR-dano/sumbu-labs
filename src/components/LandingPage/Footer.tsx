@@ -7,10 +7,13 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <div
-      id="contact"
+      id="footer"
       className="flex px-4 sm:px-8 lg:px-[52px] mb-8 sm:mb-16 lg:mb-[130px] flex-col"
     >
-      <div className="w-full flex flex-col lg:flex-row items-stretch justify-between gap-6 lg:gap-0">
+      <div
+        id="contact"
+        className="w-full flex flex-col lg:flex-row items-stretch justify-between gap-6 lg:gap-0"
+      >
         {/* Social Media Icons - Hidden on mobile, shown on larger screens */}
         <div className="socmed hidden lg:flex flex-col gap-[46px] mb-10">
           <div className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center">

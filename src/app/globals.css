@@ -141,6 +141,28 @@ body {
   }
 }
 
+/* Project Card Animations */
+@keyframes projectCardFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -426,4 +448,34 @@ body {
   justify-content: center;
   align-items: center;
   margin-left: -10px;
+}
+
+/* Project Card Styles */
+.project-card-wrapper {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.project-card {
+  border: 1px solid rgba(103, 80, 164, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  will-change: transform;
+}
+
+.project-card:hover {
+  box-shadow: 0 20px 40px rgba(170, 106, 254, 0.2),
+    0 10px 20px rgba(0, 0, 0, 0.3);
+  border-color: rgba(170, 106, 254, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transform: none !important;
+  }
+
+  .project-card-wrapper {
+    animation: none;
+    opacity: 1;
+  }
 }

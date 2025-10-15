@@ -27,6 +27,11 @@ export function Navigation() {
       link: "#services",
     },
     {
+      name: "Projects",
+      link: "/projects",
+      isExternal: true,
+    },
+    {
       name: "Our Team",
       link: "#team",
     },
@@ -39,6 +44,12 @@ export function Navigation() {
     e: React.MouseEvent<HTMLAnchorElement>,
     link: string
   ) => {
+    // Check if it's an external link (starts with /)
+    if (link.startsWith("/")) {
+      // Let the default behavior handle it (navigation to new page)
+      return;
+    }
+
     e.preventDefault();
     const targetId = link.replace("#", "");
     const targetElement = document.getElementById(targetId);
