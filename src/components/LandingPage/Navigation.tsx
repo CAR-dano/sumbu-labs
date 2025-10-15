@@ -11,8 +11,12 @@ import {
   MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 export function Navigation() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   const navItems = [
     {
       name: "Home",
@@ -39,6 +43,19 @@ export function Navigation() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Handle logo click
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // If on homepage, scroll to top
+    if (isHomePage) {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+    // If not on homepage, let default behavior navigate to "/"
+  };
+
   // Smooth scroll function
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -47,6 +64,12 @@ export function Navigation() {
     // Check if it's an external link (starts with /)
     if (link.startsWith("/")) {
       // Let the default behavior handle it (navigation to new page)
+      return;
+    }
+
+    // If not on homepage, navigate to homepage with hash
+    if (!isHomePage) {
+      window.location.href = `/${link}`;
       return;
     }
 
@@ -70,7 +93,7 @@ export function Navigation() {
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
-          <NavbarLogo />
+          <NavbarLogo onClick={handleLogoClick} />
           <NavItems
             items={navItems}
             onItemClick={(e, link) => handleNavClick(e, link)}
@@ -88,7 +111,7 @@ export function Navigation() {
         {/* Mobile Navigation */}
         <MobileNav>
           <MobileNavHeader>
-            <NavbarLogo />
+            <NavbarLogo onClick={handleLogoClick} />
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

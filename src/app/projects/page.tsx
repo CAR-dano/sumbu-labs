@@ -27,6 +27,7 @@ interface UiProject {
   categories: string[];
   category: string;
   image: string;
+  slug: string;
 }
 
 const categories = [
@@ -64,6 +65,7 @@ export default function ProjectsPage() {
                 category: (project.categories || ["other"])[0],
                 image:
                   project.coverImage?.url || "/assets/projects/placeholder.jpg",
+                slug: project.slug,
               };
             }
           );
@@ -178,16 +180,18 @@ export default function ProjectsPage() {
                 Let&apos;s align your vision with our expertise and create
                 something extraordinary together.
               </p>
-              <button
-                onClick={() => {
-                  document
-                    .getElementById("footer")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="btn-cta inline-flex"
-              >
-                Let&apos;s Work Together
-              </button>
+              <div className="flex justify-center">
+                <button
+                  onClick={() => {
+                    document
+                      .getElementById("footer")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="btn-cta"
+                >
+                  Let&apos;s Work Together
+                </button>
+              </div>
             </div>
           </div>
         </div>

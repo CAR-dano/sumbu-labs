@@ -230,10 +230,15 @@ export const MobileNavToggle = ({
   );
 };
 
-export const NavbarLogo = () => {
+export const NavbarLogo = ({
+  onClick,
+}: {
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+}) => {
   return (
     <a
-      href="#"
+      href="/"
+      onClick={onClick}
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
       <img

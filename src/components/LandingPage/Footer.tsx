@@ -16,18 +16,36 @@ const Footer = () => {
       >
         {/* Social Media Icons - Hidden on mobile, shown on larger screens */}
         <div className="socmed hidden lg:flex flex-col gap-[46px] mb-10">
-          <div className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center">
+          <a
+            href="https://x.com/SumbuLabs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center hover:bg-[#aa6afe] transition-colors duration-300"
+          >
             <FaXTwitter size={36} />
-          </div>
-          <div className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center">
+          </a>
+          <a
+            href="mailto:sumbulab@gmail.com"
+            className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center hover:bg-[#aa6afe] transition-colors duration-300"
+          >
             <MdOutlineMailOutline size={36} />
-          </div>
-          <div className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center">
+          </a>
+          <a
+            href="https://wa.me/6281231551634"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center hover:bg-[#aa6afe] transition-colors duration-300"
+          >
             <FaWhatsapp size={36} />
-          </div>
-          <div className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center">
+          </a>
+          <a
+            href="https://www.instagram.com/sumbulabs/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-[78px] h-[78px] bg-[#11152D] rounded-full text-white flex items-center justify-center hover:bg-[#aa6afe] transition-colors duration-300"
+          >
             <FaInstagram size={36} />
-          </div>
+          </a>
         </div>
 
         {/* Main Content */}
@@ -81,41 +99,59 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="contact flex flex-col items-start justify-center gap-3 lg:gap-4 z-10 relative mt-6 lg:mt-0">
-            <div className="flex gap-3 lg:gap-5 text-white items-center">
+            <a
+              href="https://x.com/SumbuLabs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex gap-3 lg:gap-5 text-white items-center hover:text-[#aa6afe] transition-colors duration-300"
+            >
               <FaXTwitter size={24} className="sm:hidden" />
               <FaXTwitter size={30} className="hidden sm:block lg:hidden" />
               <FaXTwitter size={36} className="hidden lg:block" />
-              <p className="text-white text-sm sm:text-lg lg:text-2xl font-roboto">
+              <p className="text-sm sm:text-lg lg:text-2xl font-roboto">
                 sumbu.lab
               </p>
-            </div>
-            <div className="flex gap-3 lg:gap-5 text-white items-center">
+            </a>
+            <a
+              href="mailto:sumbulab@gmail.com"
+              className="flex gap-3 lg:gap-5 text-white items-center hover:text-[#aa6afe] transition-colors duration-300"
+            >
               <MdOutlineMailOutline size={24} className="sm:hidden" />
               <MdOutlineMailOutline
                 size={30}
                 className="hidden sm:block lg:hidden"
               />
               <MdOutlineMailOutline size={36} className="hidden lg:block" />
-              <p className="text-white text-sm sm:text-lg lg:text-2xl font-roboto break-all">
+              <p className="text-sm sm:text-lg lg:text-2xl font-roboto break-all">
                 sumbulab@gmail.com
               </p>
-            </div>
-            <div className="flex gap-3 lg:gap-5 text-white items-center">
+            </a>
+            <a
+              href="https://wa.me/6281231551634"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex gap-3 lg:gap-5 text-white items-center hover:text-[#aa6afe] transition-colors duration-300"
+            >
               <FaWhatsapp size={24} className="sm:hidden" />
               <FaWhatsapp size={30} className="hidden sm:block lg:hidden" />
               <FaWhatsapp size={36} className="hidden lg:block" />
-              <p className="text-white text-sm sm:text-lg lg:text-2xl font-roboto">
+              <p className="text-sm sm:text-lg lg:text-2xl font-roboto">
                 081231551634
               </p>
-            </div>
-            <div className="flex gap-3 lg:gap-5 text-white items-center">
+            </a>
+            <a
+              href="https://www.instagram.com/sumbulabs/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex gap-3 lg:gap-5 text-white items-center hover:text-[#aa6afe] transition-colors duration-300"
+            >
               <FaInstagram size={24} className="sm:hidden" />
               <FaInstagram size={30} className="hidden sm:block lg:hidden" />
               <FaInstagram size={36} className="hidden lg:block" />
-              <p className="text-white text-sm sm:text-lg lg:text-2xl font-roboto">
+              <p className="text-sm sm:text-lg lg:text-2xl font-roboto">
                 sumbu.xyz
               </p>
-            </div>
+            </a>
           </div>
         </div>
       </div>
