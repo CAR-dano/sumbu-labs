@@ -70,9 +70,13 @@ export default function BriefForm() {
 
   // Draft storage
   const draftStorage = useDraftStorage<BriefFormData>();
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
   const [showRestoreDialog, setShowRestoreDialog] = useState(false);
-  const [pendingDraft, setPendingDraft] = useState<ReturnType<typeof draftStorage.read> | null>(null);
+  const [pendingDraft, setPendingDraft] = useState<ReturnType<
+    typeof draftStorage.read
+  > | null>(null);
 
   const [formData, setFormData] = useState<BriefFormData>({
     fullName: "",
@@ -90,9 +94,9 @@ export default function BriefForm() {
     website: "",
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof BriefFormData, string>>>(
-    {}
-  );
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof BriefFormData, string>>
+  >({});
 
   // Check for draft on mount
   useEffect(() => {
@@ -112,11 +116,14 @@ export default function BriefForm() {
       setSaveStatus("saving");
       draftStorage.write(formData, currentStep);
       setSaveStatus("saved");
-      
+
       // Show brief toast
       toast({
         title: "Draft saved",
-        description: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        description: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
         duration: 2000,
       });
     }, 800); // 800ms debounce
@@ -153,7 +160,10 @@ export default function BriefForm() {
     setSaveStatus("saved");
     toast({
       title: "Draft saved manually",
-      description: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      description: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     });
   }, [draftStorage, formData, currentStep, toast]);
 
@@ -254,7 +264,7 @@ export default function BriefForm() {
 
       // Clear draft on success
       draftStorage.clear();
-      
+
       toast({
         title: "Success!",
         description: "Your project brief has been submitted successfully.",
@@ -679,7 +689,8 @@ export default function BriefForm() {
                       Remember this device
                     </Label>
                     <p className="text-sm text-gray-500 mt-1">
-                      Auto-save your progress as you type. Drafts expire after 30 days.
+                      Auto-save your progress as you type. Drafts expire after
+                      30 days.
                     </p>
                   </div>
                   <Switch

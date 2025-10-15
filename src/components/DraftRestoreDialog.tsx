@@ -64,8 +64,8 @@ export default function DraftRestoreDialog({
                     </h3>
                   </div>
                   <p className="text-sm text-gray-400 ml-[52px]">
-                    We found a saved draft from {formatSaveTime(draftAge)}. Would
-                    you like to continue where you left off?
+                    We found a saved draft from {formatSaveTime(draftAge)}.
+                    Would you like to continue where you left off?
                   </p>
                 </div>
 

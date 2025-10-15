@@ -25,37 +25,44 @@ interface UseDraftStorageReturn<T> {
 // Truncate large text fields
 function sanitizeData<T extends Record<string, unknown>>(data: T): T {
   const sanitized = { ...data };
-  
+
   Object.keys(sanitized).forEach((key) => {
     const value = sanitized[key];
-    
+
     if (typeof value === "string" && value.length > MAX_TEXT_LENGTH) {
-      (sanitized as Record<string, unknown>)[key] = value.slice(0, MAX_TEXT_LENGTH);
+      (sanitized as Record<string, unknown>)[key] = value.slice(
+        0,
+        MAX_TEXT_LENGTH
+      );
     }
-    
+
     // Remove file objects (only keep metadata if needed)
     if (value instanceof File || value instanceof Blob) {
       delete (sanitized as Record<string, unknown>)[key];
     }
-    
+
     // Handle arrays
     if (Array.isArray(value)) {
-      (sanitized as Record<string, unknown>)[key] = value.map((item) => {
-        if (typeof item === "string" && item.length > MAX_TEXT_LENGTH) {
-          return item.slice(0, MAX_TEXT_LENGTH);
-        }
-        if (item instanceof File || item instanceof Blob) {
-          return null;
-        }
-        return item;
-      }).filter(Boolean);
+      (sanitized as Record<string, unknown>)[key] = value
+        .map((item) => {
+          if (typeof item === "string" && item.length > MAX_TEXT_LENGTH) {
+            return item.slice(0, MAX_TEXT_LENGTH);
+          }
+          if (item instanceof File || item instanceof Blob) {
+            return null;
+          }
+          return item;
+        })
+        .filter(Boolean);
     }
   });
-  
+
   return sanitized;
 }
 
-export function useDraftStorage<T extends Record<string, unknown>>(): UseDraftStorageReturn<T> {
+export function useDraftStorage<
+  T extends Record<string, unknown>
+>(): UseDraftStorageReturn<T> {
   const [lastSaved, setLastSaved] = useState<number | null>(null);
   const [isEnabled, setIsEnabled] = useState<boolean>(true);
 
@@ -140,7 +147,7 @@ export function useDraftStorage<T extends Record<string, unknown>>(): UseDraftSt
         };
 
         const serialized = JSON.stringify(draft);
-        
+
         // Check storage size (stay under 5MB for safety)
         if (serialized.length > 5 * 1024 * 1024) {
           console.warn("Draft too large, skipping save");
