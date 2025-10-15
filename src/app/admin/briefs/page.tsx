@@ -144,13 +144,7 @@ export default function AdminBriefsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f1a] relative">
-      {/* Ambient Background */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[10%] right-[5%] w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[150px] animate-pulse" />
-        <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] animate-pulse [animation-delay:1.5s]" />
-      </div>
-
+    <div className="relative">
       <div className="relative max-w-7xl mx-auto px-6 md:px-8 py-12">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
