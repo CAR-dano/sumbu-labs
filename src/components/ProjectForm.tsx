@@ -245,9 +245,6 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
     setLoading(true);
 
     try {
-      console.log("Form data before validation:", data);
-      console.log("Categories in form:", data.categories);
-
       // Validate with zod
       const validation = projectSchema.safeParse(data);
       if (!validation.success) {
@@ -261,16 +258,10 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
         return;
       }
 
-      console.log("Validated form data:", validation.data);
-      console.log("Categories after validation:", validation.data.categories);
-
       const url = isEdit
         ? `/api/projects/${initialData?._id}`
         : "/api/projects";
       const method = isEdit ? "PUT" : "POST";
-
-      console.log(`Sending ${method} request to:`, url);
-      console.log("Payload:", validation.data);
 
       const res = await fetch(url, {
         method,

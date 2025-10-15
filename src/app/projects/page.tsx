@@ -52,18 +52,9 @@ export default function ProjectsPage() {
         if (res.ok) {
           const data = await res.json();
 
-          console.log("Fetched projects data:", data);
-
           // Transform API projects to UI format
           const uiProjects: UiProject[] = data.projects.map(
             (project: ApiProject, index: number) => {
-              console.log(`Project ${index + 1}:`, {
-                title: project.title,
-                categories: project.categories,
-                coverImage: project.coverImage,
-                imageUrl: project.coverImage?.url,
-              });
-
               return {
                 id: index + 1,
                 title: project.title,

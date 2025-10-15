@@ -83,7 +83,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
           loop
           playsInline
           className="w-full h-auto object-contain md:w-full md:h-full md:object-cover"
-          onLoadedData={() => console.log("Video loaded")}
         >
           <source src="/assets/video/sumbulabanim.mp4" type="video/mp4" />
           Your browser does not support the video tag.

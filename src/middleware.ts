@@ -27,18 +27,9 @@ export async function middleware(request: NextRequest) {
 
     const token = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
 
-    // Debug log
-    console.log("Middleware check for:", pathname);
-    console.log("Cookie name:", ADMIN_COOKIE_NAME);
-    console.log("Token exists:", !!token);
-    console.log("All cookies:", request.cookies.getAll());
-
     if (!token || !(await verifyJwtMiddleware(token))) {
-      console.log("Redirecting to login - no valid token");
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
-
-    console.log("Token valid, allowing access");
   }
 
   // Protect API mutations

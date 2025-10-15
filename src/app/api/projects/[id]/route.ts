@@ -50,9 +50,6 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const body = await request.json();
 
-    console.log("Update project payload:", body);
-    console.log("Categories in payload:", body.categories);
-
     const validation = projectUpdateSchema.safeParse(body);
 
     if (!validation.success) {
@@ -64,8 +61,6 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     const data = validation.data;
-    console.log("Validated data:", data);
-    console.log("Categories in validated data:", data.categories);
 
     // If title changed, regenerate slug
     if (data.title) {
@@ -82,31 +77,13 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     // Explicitly set categories if present
     if (data.categories && Array.isArray(data.categories)) {
       updateData.categories = data.categories;
-      console.log("Explicitly setting categories:", updateData.categories);
     }
-
-    console.log("Final update data:", updateData);
-
-    // Get project before update
-    const projectBefore = await Project.findById(id);
-    console.log("Project before update:", projectBefore?.toObject());
-    console.log("Categories before update:", projectBefore?.categories);
 
     const project = await Project.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
       strict: false,
     });
-
-    console.log("Updated project:", project?.toObject());
-    console.log("Project categories after update:", project?.categories);
-
-    // Verify in database
-    const verifyProject = await Project.findById(id);
-    console.log(
-      "Verification check - categories in DB:",
-      verifyProject?.categories
-    );
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });

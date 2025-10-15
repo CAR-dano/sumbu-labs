@@ -40,10 +40,6 @@ export default function AdminLoginPage() {
         });
         return;
       }
-
-      console.log("Login successful, response:", data);
-      console.log("Cookies after login:", document.cookie);
-
       toast({
         title: "Success",
         description: "Redirecting to dashboard...",
@@ -51,7 +47,6 @@ export default function AdminLoginPage() {
 
       // Wait a bit longer to ensure cookie is fully set
       setTimeout(() => {
-        console.log("Redirecting to /admin");
         window.location.href = "/admin";
       }, 500);
     } catch {
