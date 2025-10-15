@@ -1,84 +1,100 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/LandingPage/Navigation";
 import Footer from "@/components/LandingPage/Footer";
 import ProjectCard from "@/components/Projects/ProjectCard";
 import FilterChips from "@/components/Projects/FilterChips";
 import MetaBalls from "@/components/ReactBits/MetaBalls/MetaBalls";
 
-// Project data
-const projects = [
-  {
-    id: 1,
-    title: "Kansei VR Product Design",
-    description:
-      "VR platform helping MSMEs ideate product concepts using emotional metrics and immersive visualization.",
-    tags: ["UI/UX", "Research", "VR Development"],
-    category: "design",
-    image: "/assets/projects/kansei-vr.jpg", // placeholder
-  },
-  {
-    id: 2,
-    title: "Car-dano Blockchain Automotive",
-    description:
-      "Inspect and certify used cars using smart contracts with real-time PDF generation and blockchain verification.",
-    tags: ["Development", "Blockchain", "Backend"],
-    category: "development",
-    image: "/assets/projects/car-dano.jpg",
-  },
-  {
-    id: 3,
-    title: "UMKM Geo Portal",
-    description:
-      "Interactive mapping platform for local tourism and MSMEs in Nusa Penida with real-time data visualization.",
-    tags: ["UI/UX", "Development", "GIS"],
-    category: "design",
-    image: "/assets/projects/umkm-geo.jpg",
-  },
-  {
-    id: 4,
-    title: "Mental Health Assessment Platform",
-    description:
-      "Research-driven digital platform for mental health screening using validated psychological frameworks.",
-    tags: ["Research", "UI/UX", "Healthcare"],
-    category: "research",
-    image: "/assets/projects/mental-health.jpg",
-  },
-  {
-    id: 5,
-    title: "Supply Chain Analytics Dashboard",
-    description:
-      "Real-time analytics dashboard for supply chain optimization with predictive insights and KPI tracking.",
-    tags: ["Development", "Data Visualization", "Analytics"],
-    category: "development",
-    image: "/assets/projects/supply-chain.jpg",
-  },
-  {
-    id: 6,
-    title: "User Experience Research Framework",
-    description:
-      "Comprehensive UX research methodology toolkit for conducting and analyzing user behavior studies.",
-    tags: ["Research", "UI/UX", "Documentation"],
-    category: "research",
-    image: "/assets/projects/ux-framework.jpg",
-  },
-];
+interface ApiProject {
+  _id: string;
+  title: string;
+  shortDescription: string;
+  tags: string[];
+  categories: string[];
+  coverImage?: {
+    url: string;
+  };
+  slug: string;
+}
+
+interface UiProject {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  categories: string[];
+  category: string;
+  image: string;
+}
 
 const categories = [
   { id: "all", label: "All Projects" },
-  { id: "design", label: "Design" },
-  { id: "development", label: "Development" },
-  { id: "research", label: "Research" },
+  { id: "software development", label: "Software Development" },
+  { id: "ui/ux design", label: "UI/UX Design" },
+  { id: "artificial intelligent", label: "Artificial Intelligent" },
+  { id: "blockchain", label: "Blockchain" },
+  { id: "other", label: "Other" },
 ];
 
 export default function ProjectsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [projects, setProjects] = useState<UiProject[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch(
+          "/api/projects?status=published&sort=order&order=asc&limit=100"
+        );
+        if (res.ok) {
+          const data = await res.json();
+
+          console.log("Fetched projects data:", data);
+
+          // Transform API projects to UI format
+          const uiProjects: UiProject[] = data.projects.map(
+            (project: ApiProject, index: number) => {
+              console.log(`Project ${index + 1}:`, {
+                title: project.title,
+                categories: project.categories,
+                coverImage: project.coverImage,
+                imageUrl: project.coverImage?.url,
+              });
+
+              return {
+                id: index + 1,
+                title: project.title,
+                description: project.shortDescription,
+                tags: project.tags,
+                categories: project.categories || ["other"],
+                category: (project.categories || ["other"])[0],
+                image:
+                  project.coverImage?.url || "/assets/projects/placeholder.jpg",
+              };
+            }
+          );
+
+          setProjects(uiProjects);
+        }
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const filteredProjects =
     selectedCategory === "all"
       ? projects
-      : projects.filter((project) => project.category === selectedCategory);
+      : projects.filter((project) =>
+          project.categories.includes(selectedCategory)
+        );
 
   return (
     <div className="min-h-screen bg-backgroundprimary relative overflow-hidden">
@@ -144,9 +160,19 @@ export default function ProjectsPage() {
 
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard key={project.id} project={project} index={index} />
-            ))}
+            {loading ? (
+              <div className="col-span-full text-center py-20">
+                <p className="text-gray-400 text-lg">Loading projects...</p>
+              </div>
+            ) : filteredProjects.length === 0 ? (
+              <div className="col-span-full text-center py-20">
+                <p className="text-gray-400 text-lg">No projects found.</p>
+              </div>
+            ) : (
+              filteredProjects.map((project, index) => (
+                <ProjectCard key={project.id} project={project} index={index} />
+              ))
+            )}
           </div>
 
           {/* CTA Section */}

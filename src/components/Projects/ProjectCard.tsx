@@ -20,7 +20,20 @@ interface ProjectCardProps {
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [imageError, setImageError] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Handle mouse enter - set initial position di tengah card
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    setMousePosition({ x, y });
+    setIsHovered(true);
+  };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -64,7 +77,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       style={{
         animationDelay: `${index * 0.1}s`,
       }}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
@@ -83,12 +96,26 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
         {/* Image Section */}
         <div className="relative w-full h-48 bg-gradient-to-br from-[#6750A4] to-[#aa6afe] overflow-hidden">
-          {/* Placeholder gradient - replace with actual images */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-white/20 text-6xl font-bold font-roboto">
-              {project.title.charAt(0)}
+          {/* Project Image */}
+          {project.image && !imageError ? (
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              onError={() => {
+                console.error(`Failed to load image: ${project.image}`);
+                setImageError(true);
+              }}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-white/20 text-6xl font-bold font-roboto">
+                {project.title.charAt(0)}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Overlay on hover */}
           <div
