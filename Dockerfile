@@ -36,17 +36,12 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=5000
 
-# Copy package files first
-COPY --from=builder /app/package*.json ./
+# Copy standalone output dari Next.js build
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
-# Install production dependencies as root
-RUN npm ci --only=production
-
-# Copy hasil build dari tahap builder
-COPY --from=builder /app/.next ./.next
+# Copy public folder untuk static assets
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./next.config.ts
-COPY --from=builder /app/src ./src
 
 # Buat direktori uploads dengan permissions yang benar
 RUN mkdir -p /app/public/uploads/projects && \
@@ -60,7 +55,7 @@ RUN echo '#!/bin/sh' > /app/startup.sh && \
     echo 'mkdir -p /app/public/uploads/projects' >> /app/startup.sh && \
     echo 'chown -R node:node /app/public/uploads' >> /app/startup.sh && \
     echo 'chmod -R 755 /app/public/uploads' >> /app/startup.sh && \
-    echo 'su-exec node npm start' >> /app/startup.sh && \
+    echo 'su-exec node node server.js' >> /app/startup.sh && \
     chmod +x /app/startup.sh
 
 # Install su-exec untuk switch user di runtime
