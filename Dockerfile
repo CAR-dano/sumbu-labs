@@ -36,15 +36,21 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=5000
 
+# Copy package files first
+COPY --from=builder /app/package*.json ./
+
+# Install production dependencies as root
+RUN npm ci --only=production
+
 # Copy hasil build dari tahap builder
-COPY --from=builder /app ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY --from=builder /app/src ./src
 
 # Buat direktori uploads dengan permissions yang benar
 RUN mkdir -p /app/public/uploads/projects && \
-    chown -R node:node /app/public/uploads
-
-# Hanya install dependencies production
-RUN npm ci --only=production
+    chown -R node:node /app
 
 # Switch to non-root user
 USER node
