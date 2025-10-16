@@ -39,8 +39,15 @@ ENV PORT=5000
 # Copy hasil build dari tahap builder
 COPY --from=builder /app ./
 
+# Buat direktori uploads dengan permissions yang benar
+RUN mkdir -p /app/public/uploads/projects && \
+    chown -R node:node /app/public/uploads
+
 # Hanya install dependencies production
 RUN npm ci --only=production
+
+# Switch to non-root user
+USER node
 
 # Expose port
 EXPOSE 5000
