@@ -8,12 +8,22 @@ interface PageProps {
 
 async function getProject(slug: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    // Server-side: use internal URL (localhost:PORT)
+    // Client-side: use NEXT_PUBLIC_BASE_URL
+    const isServer = typeof window === "undefined";
+    const port = process.env.PORT || "3000";
+    const baseUrl = isServer
+      ? `http://localhost:${port}`
+      : process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${port}`;
+
     const res = await fetch(`${baseUrl}/api/projects-by-slug/${slug}`, {
       cache: "no-store",
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error(`Failed to fetch project ${slug}: ${res.status}`);
+      return null;
+    }
     return await res.json();
   } catch (error) {
     console.error("Failed to fetch project:", error);

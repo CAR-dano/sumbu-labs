@@ -23,6 +23,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_COOKIE_NAME: ${ADMIN_COOKIE_NAME:-sb_admin_token}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000}
+      NEXT_PUBLIC_BASE_URL: http://localhost:5000
       IMAGE_ROOT: /var/www/sumbu-labs/images
       IMAGE_BASE_URL: https://sumbu.xyz/images
     user: "1000:1000"
