@@ -96,7 +96,15 @@ const projectSchema = new Schema<IProject>(
       type: [imageSchema],
       default: [],
     },
-  },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "TeamMember",
+    },
+    updatedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "TeamMember",
+    },
+  } as Record<string, unknown>,
   {
     timestamps: true,
   }

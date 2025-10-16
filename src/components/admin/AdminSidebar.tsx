@@ -1,31 +1,63 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, FileText } from "lucide-react";
+import { Grid3x3, FileText, Users, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 const navItems = [
   {
     name: "Projects",
     href: "/admin",
-    icon: LayoutDashboard,
+    icon: Grid3x3,
   },
   {
     name: "Briefs",
     href: "/admin/briefs",
     icon: FileText,
   },
+  {
+    name: "Teams",
+    href: "/admin/teams",
+    icon: Users,
+  },
 ];
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { toast } = useToast();
 
   const isActive = (href: string) => {
     if (href === "/admin") {
       return pathname === "/admin";
     }
     return pathname.startsWith(href);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+
+      if (res.ok) {
+        toast({
+          title: "Success",
+          description: "Logged out successfully",
+        });
+        router.push("/admin/login");
+      } else {
+        throw new Error("Logout failed");
+      }
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to logout",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -103,6 +135,31 @@ export default function AdminSidebar() {
             );
           })}
         </div>
+
+        {/* Logout Button - Bottom of Sidebar */}
+        <div className="mt-auto w-full px-2">
+          <button
+            onClick={handleLogout}
+            className="group relative w-full"
+            title="Logout"
+          >
+            {/* Tooltip */}
+            <div className="pointer-events-none absolute left-full ml-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
+              <div className="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg text-white text-sm font-medium whitespace-nowrap ring-1 ring-white/20">
+                Logout
+              </div>
+            </div>
+
+            {/* Button */}
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="flex h-14 w-full items-center justify-center rounded-2xl transition-all duration-200 hover:bg-red-500/10 hover:ring-1 hover:ring-red-500/20"
+            >
+              <LogOut className="w-6 h-6 text-red-400 group-hover:text-red-300 transition-colors duration-200" />
+            </motion.div>
+          </button>
+        </div>
       </motion.nav>
 
       {/* Mobile Bottom Dock */}
@@ -163,6 +220,20 @@ export default function AdminSidebar() {
             </Link>
           );
         })}
+
+        {/* Logout Button - Mobile */}
+        <button onClick={handleLogout} className="group relative">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-2xl transition-all duration-200 hover:bg-red-500/10"
+          >
+            <LogOut className="w-5 h-5 text-red-400 group-hover:text-red-300 transition-colors duration-200" />
+            <span className="text-xs font-medium text-red-400 group-hover:text-red-300 transition-colors duration-200">
+              Logout
+            </span>
+          </motion.div>
+        </button>
       </motion.nav>
     </>
   );

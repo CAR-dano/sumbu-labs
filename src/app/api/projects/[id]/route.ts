@@ -79,6 +79,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       updateData.categories = data.categories;
     }
 
+    // Track who updated
+    updateData.updatedBy = user.memberId;
+
     const project = await Project.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,

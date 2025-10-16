@@ -5,12 +5,15 @@ import { jwtVerify } from "jose";
 // Hardcode cookie name to ensure consistency
 const ADMIN_COOKIE_NAME = "sb_admin_token";
 // Edge runtime needs inline JWT_SECRET
-const JWT_SECRET = new TextEncoder().encode("supersecretjwt");
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || "supersecretjwt"
+);
 
 async function verifyJwtMiddleware(token: string): Promise<boolean> {
   try {
-    await jwtVerify(token, JWT_SECRET);
-    return true;
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+    // Verify it has the new structure with memberId
+    return !!payload.memberId;
   } catch {
     return false;
   }

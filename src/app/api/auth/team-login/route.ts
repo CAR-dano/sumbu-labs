@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { loginSchema } from "@/lib/zod";
+import { connectDB } from "@/lib/db";
+import TeamMember from "@/models/TeamMember";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import Role, { type IRole } from "@/models/Role";
 import { signJwt } from "@/lib/auth";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL!;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
-// Hardcode cookie name to ensure consistency
 const ADMIN_COOKIE_NAME = "sb_admin_token";
 
 // Simple rate limiting
@@ -45,28 +45,75 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const validation = loginSchema.safeParse(body);
+    const { memberId, pin } = body;
 
-    if (!validation.success) {
+    if (!memberId || !pin) {
       return NextResponse.json(
-        { error: validation.error.issues[0].message },
+        { error: "Member ID and PIN are required" },
         { status: 400 }
       );
     }
 
-    const { email, password } = validation.data;
+    if (pin.length < 4 || pin.length > 6) {
+      return NextResponse.json(
+        { error: "PIN must be 4-6 digits" },
+        { status: 400 }
+      );
+    }
 
-    if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+    await connectDB();
+
+    // Find team member and populate role
+    const member = await TeamMember.findById(memberId).populate("role");
+
+    if (!member) {
       return NextResponse.json(
         { error: "Invalid credentials" },
         { status: 401 }
       );
     }
 
-    const token = signJwt({ email }, "7d");
+    if (!member.isActive) {
+      return NextResponse.json(
+        { error: "Account is disabled. Please contact administrator." },
+        { status: 403 }
+      );
+    }
+
+    // Verify PIN
+    const isPinValid = await member.comparePin(pin);
+
+    if (!isPinValid) {
+      return NextResponse.json(
+        { error: "Invalid credentials" },
+        { status: 401 }
+      );
+    }
+
+    // Create JWT token
+    const role = member.role as unknown as IRole;
+    const token = signJwt(
+      {
+        memberId: String(member._id),
+        fullName: member.fullName,
+        category: member.category,
+        role: role.name,
+      },
+      "7d"
+    );
 
     // Create response with cookie
-    const response = NextResponse.json({ ok: true });
+    const response = NextResponse.json({
+      ok: true,
+      member: {
+        id: member._id,
+        fullName: member.fullName,
+        nickname: member.nickname,
+        category: member.category,
+        role: role.name,
+        photoUrl: member.photoUrl,
+      },
+    });
 
     // Set cookie directly in response
     response.cookies.set({

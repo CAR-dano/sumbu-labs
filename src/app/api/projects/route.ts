@@ -105,6 +105,7 @@ export async function POST(request: NextRequest) {
     const project = await Project.create({
       ...data,
       slug,
+      createdBy: user.memberId,
     });
 
     return NextResponse.json(project, { status: 201 });

@@ -9,18 +9,14 @@ import {
   Search,
   Mail,
   ExternalLink,
+  Inbox,
+  TrendingUp,
+  Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { motion } from "framer-motion";
 
 interface Brief {
   _id: string;

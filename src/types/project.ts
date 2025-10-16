@@ -28,6 +28,8 @@ export interface IProject extends Document {
   metrics?: Record<string, number>;
   coverImage?: ImageData;
   gallery?: ImageData[];
+  createdBy?: string;
+  updatedBy?: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,20 +1,26 @@
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
-const ADMIN_COOKIE_NAME = process.env.ADMIN_COOKIE_NAME || 'sb_admin_token';
+const ADMIN_COOKIE_NAME = process.env.ADMIN_COOKIE_NAME || "sb_admin_token";
 
 if (!JWT_SECRET) {
-  throw new Error('Please define JWT_SECRET in .env.local');
+  throw new Error("Please define JWT_SECRET in .env.local");
 }
 
 export interface JwtPayload {
-  email: string;
+  memberId: string;
+  fullName: string;
+  category: "Core" | "Member";
+  role: string;
   iat?: number;
   exp?: number;
 }
 
-export function signJwt(payload: JwtPayload, expiresIn: string | number = '7d'): string {
+export function signJwt(
+  payload: JwtPayload,
+  expiresIn: string | number = "7d"
+): string {
   return jwt.sign(payload, JWT_SECRET, { expiresIn } as jwt.SignOptions);
 }
 
@@ -31,9 +37,9 @@ export async function setAuthCookie(token: string) {
   cookieStore.set(ADMIN_COOKIE_NAME, token, {
     httpOnly: true,
     secure: false, // Set to true in production only
-    sameSite: 'lax',
+    sameSite: "lax",
     maxAge: 60 * 60 * 24 * 7, // 7 days
-    path: '/',
+    path: "/",
   });
 }
 

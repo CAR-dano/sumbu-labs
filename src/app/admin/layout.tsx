@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { Toaster } from "@/components/ui/toaster";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 
@@ -6,6 +9,9 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const hideSidebar = pathname?.startsWith("/admin/login");
+
   return (
     <div className="min-h-screen bg-[#0b0f1a] relative">
       {/* Ambient Background */}
@@ -14,11 +20,17 @@ export default function AdminLayout({
         <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] animate-pulse [animation-delay:1.5s]" />
       </div>
 
-      {/* Floating Sidebar */}
-      <AdminSidebar />
+      {/* Floating Sidebar - Only show on dashboard pages */}
+      {!hideSidebar && <AdminSidebar />}
 
       {/* Main Content with Left Padding for Desktop */}
-      <main className="lg:pl-[120px] pb-24 lg:pb-8">{children}</main>
+      <main
+        className={
+          hideSidebar ? "pb-24 lg:pb-0" : "lg:pl-[120px] pb-24 lg:pb-8"
+        }
+      >
+        {children}
+      </main>
 
       <Toaster />
     </div>
