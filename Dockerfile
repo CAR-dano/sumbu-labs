@@ -52,11 +52,19 @@ COPY --from=builder /app/src ./src
 RUN mkdir -p /app/public/uploads/projects && \
     chown -R node:node /app
 
-# Switch to non-root user
-USER node
-
 # Expose port
 EXPOSE 5000
 
-# Jalankan aplikasi
-CMD ["npm", "start"]
+# Create startup script untuk fix permissions
+RUN echo '#!/bin/sh' > /app/startup.sh && \
+    echo 'mkdir -p /app/public/uploads/projects' >> /app/startup.sh && \
+    echo 'chown -R node:node /app/public/uploads' >> /app/startup.sh && \
+    echo 'chmod -R 755 /app/public/uploads' >> /app/startup.sh && \
+    echo 'su-exec node npm start' >> /app/startup.sh && \
+    chmod +x /app/startup.sh
+
+# Install su-exec untuk switch user di runtime
+RUN apk add --no-cache su-exec
+
+# Jalankan dengan startup script (sebagai root, tapi npm start sebagai node user)
+CMD ["/app/startup.sh"]
