@@ -13,6 +13,18 @@ RUN npm ci
 # Copy semua source code
 COPY . .
 
+# Build arguments for Next.js build time
+ARG MONGODB_URI
+ARG JWT_SECRET
+ARG ADMIN_COOKIE_NAME
+ARG NEXT_PUBLIC_API_URL
+
+# Set environment variables for build
+ENV MONGODB_URI=${MONGODB_URI}
+ENV JWT_SECRET=${JWT_SECRET}
+ENV ADMIN_COOKIE_NAME=${ADMIN_COOKIE_NAME}
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 # Build Next.js untuk production
 RUN npm run build
 
