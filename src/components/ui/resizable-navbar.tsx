@@ -7,6 +7,8 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
 
 import React, { useRef, useState } from "react";
 
@@ -236,18 +238,19 @@ export const NavbarLogo = ({
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) => {
   return (
-    <a
+    <Link
       href="/"
       onClick={onClick}
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
-      <img
+      <Image
         src="/assets/logo/full-horizontal.svg"
         alt="logo"
         width={200}
         height={30}
+        priority
       />
-    </a>
+    </Link>
   );
 };
 

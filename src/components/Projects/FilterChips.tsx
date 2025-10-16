@@ -17,13 +17,13 @@ export default function FilterChips({
   onCategoryChange,
 }: FilterChipsProps) {
   return (
-    <div className="flex flex-wrap justify-center gap-3 mb-12 animate-slide-in-up">
+    <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10 sm:mb-12 px-2 animate-slide-in-up">
       {categories.map((category) => (
         <button
           key={category.id}
           onClick={() => onCategoryChange(category.id)}
           className={`
-            px-6 py-3 rounded-full font-roboto font-light text-sm
+            px-4 sm:px-6 py-2 sm:py-3 rounded-full font-roboto font-light text-xs sm:text-sm
             transition-all duration-300 ease-out
             ${
               selectedCategory === category.id

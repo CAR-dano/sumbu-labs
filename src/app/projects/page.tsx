@@ -94,7 +94,7 @@ export default function ProjectsPage() {
       <Navigation />
 
       {/* MetaBalls Background - Top Right */}
-      <div className="absolute top-[100px] right-0 w-[500px] h-[500px] opacity-30 pointer-events-none z-0">
+      <div className="absolute top-[100px] right-0 w-full sm:w-[500px] h-[300px] sm:h-[500px] opacity-20 sm:opacity-30 pointer-events-none z-0">
         <MetaBalls
           color="#aa6afe"
           cursorBallColor="#debcff"
@@ -110,7 +110,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* MetaBalls Background - Bottom Left */}
-      <div className="absolute bottom-0 left-0 w-96 h-96 opacity-20 pointer-events-none z-0">
+      <div className="absolute bottom-0 left-0 w-full sm:w-96 h-64 sm:h-96 opacity-15 sm:opacity-20 pointer-events-none z-0">
         <MetaBalls
           color="#debcff"
           cursorBallColor="#aa6afe"
@@ -129,9 +129,11 @@ export default function ProjectsPage() {
       <div className="relative z-10 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
-          <div className="text-center mb-16 animate-fade-in-scale">
-            <h1 className="gradient-text mb-6">Our Projects</h1>
-            <p className="hero-text max-w-3xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16 animate-fade-in-scale">
+            <h1 className="gradient-text mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl">
+              Our Projects
+            </h1>
+            <p className="hero-text max-w-3xl mx-auto text-base sm:text-lg">
               We craft{" "}
               <span className="highlight">
                 research-driven digital products
@@ -152,7 +154,7 @@ export default function ProjectsPage() {
           />
 
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
             {loading ? (
               <div className="col-span-full text-center py-20">
                 <p className="text-gray-400 text-lg">Loading projects...</p>
@@ -169,14 +171,14 @@ export default function ProjectsPage() {
           </div>
 
           {/* CTA Section */}
-          <div className="text-center py-16 px-4 animate-slide-in-up">
+          <div className="text-center py-12 sm:py-16 px-4 animate-slide-in-up">
             <div className="max-w-2xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-roboto font-light text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-roboto font-light text-white mb-4 sm:mb-6">
                 Want to build something{" "}
                 <span className="gradient-text inline-block">amazing</span> with
                 us?
               </h2>
-              <p className="text-gray-300 text-lg mb-8 font-roboto font-light">
+              <p className="text-gray-300 text-base sm:text-lg mb-6 sm:mb-8 font-roboto font-light">
                 Let&apos;s align your vision with our expertise and create
                 something extraordinary together.
               </p>
@@ -187,7 +189,7 @@ export default function ProjectsPage() {
                       .getElementById("footer")
                       ?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="btn-cta"
+                  className="btn-cta text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4"
                 >
                   Let&apos;s Work Together
                 </button>

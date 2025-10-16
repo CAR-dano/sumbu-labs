@@ -23,11 +23,17 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [imageError, setImageError] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Detect touch device
+  useEffect(() => {
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   // Handle mouse enter - set initial position di tengah card
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+    if (isTouchDevice || !cardRef.current) return;
 
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -39,7 +45,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!cardRef.current || !isHovered) return;
+      if (!cardRef.current || !isHovered || isTouchDevice) return;
 
       const rect = cardRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -48,17 +54,17 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       setMousePosition({ x, y });
     };
 
-    if (isHovered) {
+    if (isHovered && !isTouchDevice) {
       window.addEventListener("mousemove", handleMouseMove);
     }
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [isHovered]);
+  }, [isHovered, isTouchDevice]);
 
   const calculateTilt = () => {
-    if (!cardRef.current || !isHovered) return {};
+    if (!cardRef.current || !isHovered || isTouchDevice) return {};
 
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.width / 2;
@@ -104,7 +110,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             style={calculateTilt()}
           >
             {/* Image Section */}
-            <div className="relative w-full h-48 bg-gradient-to-br from-[#6750A4] to-[#aa6afe] overflow-hidden rounded-t-2xl">
+            <div className="relative w-full h-44 sm:h-48 md:h-52 bg-gradient-to-br from-[#6750A4] to-[#aa6afe] overflow-hidden rounded-t-2xl">
               {/* Project Image */}
               {project.image && !imageError ? (
                 <Image
@@ -139,11 +145,11 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             </div>
 
             {/* Content Section */}
-            <div className="p-6 relative z-10">
-              <h3 className="text-white font-roboto font-medium text-xl mb-3 leading-tight">
+            <div className="p-4 sm:p-6 relative z-10">
+              <h3 className="text-white font-roboto font-medium text-lg sm:text-xl mb-2 sm:mb-3 leading-tight line-clamp-2">
                 {project.title}
               </h3>
-              <p className="text-gray-300 font-roboto font-light text-sm leading-relaxed mb-4">
+              <p className="text-gray-300 font-roboto font-light text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-3">
                 {project.description}
               </p>
 
@@ -152,7 +158,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                 {project.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 text-xs font-roboto font-light text-[#debcff] bg-[#6750A4]/20 border border-[#6750A4]/40 rounded-full transition-all duration-300 hover:bg-[#6750A4]/30 hover:border-[#aa6afe]/60"
+                    className="px-2.5 sm:px-3 py-1 text-xs font-roboto font-light text-[#debcff] bg-[#6750A4]/20 border border-[#6750A4]/40 rounded-full transition-all duration-300 hover:bg-[#6750A4]/30 hover:border-[#aa6afe]/60"
                   >
                     {tag}
                   </span>
