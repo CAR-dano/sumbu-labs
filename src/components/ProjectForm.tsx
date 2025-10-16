@@ -219,15 +219,29 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate title before upload
+    const currentTitle = watch("title");
+    if (!currentTitle || currentTitle.trim() === "") {
+      toast({
+        title: "Title Required",
+        description: "Please enter project title before uploading images",
+        variant: "error",
+      });
+      e.target.value = ""; // Reset input
+      return;
+    }
+
     setUploading(true);
     try {
       // Generate slug from title for folder name
-      const projectSlug = watch("title")
-        ? watch("title")
-            .toLowerCase()
-            .replace(/\s+/g, "-")
-            .replace(/[^\w\-]/g, "")
-        : "untitled";
+      const projectSlug =
+        currentTitle
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/[^\w\-]/g, "")
+          .substring(0, 50) || `project-${Date.now()}`;
+
       const folder = `projects/${projectSlug}`;
 
       const result = await uploadFile(file, folder);
@@ -247,6 +261,7 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
       });
     } finally {
       setUploading(false);
+      e.target.value = ""; // Reset input
     }
   };
 
@@ -256,15 +271,29 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
+    // Validate title before upload
+    const currentTitle = watch("title");
+    if (!currentTitle || currentTitle.trim() === "") {
+      toast({
+        title: "Title Required",
+        description: "Please enter project title before uploading images",
+        variant: "error",
+      });
+      e.target.value = ""; // Reset input
+      return;
+    }
+
     setUploading(true);
     try {
       // Generate slug from title for folder name
-      const projectSlug = watch("title")
-        ? watch("title")
-            .toLowerCase()
-            .replace(/\s+/g, "-")
-            .replace(/[^\w\-]/g, "")
-        : "untitled";
+      const projectSlug =
+        currentTitle
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/[^\w\-]/g, "")
+          .substring(0, 50) || `project-${Date.now()}`;
+
       const folder = `projects/${projectSlug}/gallery`;
 
       const results = await Promise.all(
@@ -290,6 +319,7 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
       });
     } finally {
       setUploading(false);
+      e.target.value = ""; // Reset input
     }
   };
 
