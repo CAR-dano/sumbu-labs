@@ -36,6 +36,16 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=5000
 
+# Install native dependencies for sharp
+RUN apk add --no-cache \
+    libc6-compat \
+    vips-dev \
+    fftw-dev \
+    gcc \
+    g++ \
+    make \
+    libc-dev
+
 # Copy package files first
 COPY --from=builder /app/package*.json ./
 
@@ -47,23 +57,23 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.ts ./next.config.ts
 
-# Buat direktori uploads dengan permissions yang benar
-RUN mkdir -p /app/public/uploads/projects && \
-    chown -R node:node /app
+# Ensure correct permissions for app directory
+RUN chown -R node:node /app
 
 # Expose port
 EXPOSE 5000
 
-# Create startup script untuk fix permissions
+# Create startup script to ensure VM image path is accessible
 RUN echo '#!/bin/sh' > /app/startup.sh && \
-    echo 'mkdir -p /app/public/uploads/projects' >> /app/startup.sh && \
-    echo 'chown -R node:node /app/public/uploads' >> /app/startup.sh && \
-    echo 'chmod -R 755 /app/public/uploads' >> /app/startup.sh && \
-    echo 'su-exec node npm start' >> /app/startup.sh && \
+    echo '# Ensure image directory exists and has correct permissions' >> /app/startup.sh && \
+    echo 'if [ -d "/var/www/sumbu-labs/images" ]; then' >> /app/startup.sh && \
+    echo '  chmod -R 775 /var/www/sumbu-labs/images 2>/dev/null || true' >> /app/startup.sh && \
+    echo 'fi' >> /app/startup.sh && \
+    echo 'exec node server.js' >> /app/startup.sh && \
     chmod +x /app/startup.sh
 
-# Install su-exec untuk switch user di runtime
-RUN apk add --no-cache su-exec
+# Switch to non-root user
+USER node
 
-# Jalankan dengan startup script (sebagai root, tapi npm start sebagai node user)
-CMD ["/app/startup.sh"]
+# Run Next.js
+CMD ["npm", "start"]
