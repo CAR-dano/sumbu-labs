@@ -214,14 +214,14 @@ export default function AdminTeamsPage() {
         toast({
           title: "Error",
           description: "Failed to load team members",
-          variant: "destructive",
+          variant: "error",
         });
       }
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to connect to server",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -233,7 +233,7 @@ export default function AdminTeamsPage() {
       toast({
         title: "Permission Denied",
         description: "Only Core team members can change member status",
-        variant: "destructive",
+        variant: "error",
       });
       return;
     }
@@ -255,14 +255,14 @@ export default function AdminTeamsPage() {
         toast({
           title: "Error",
           description: "Failed to update member status",
-          variant: "destructive",
+          variant: "error",
         });
       }
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to connect to server",
-        variant: "destructive",
+        variant: "error",
       });
     }
   };
@@ -576,3 +576,4 @@ export default function AdminTeamsPage() {
     </div>
   );
 }
+

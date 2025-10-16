@@ -65,7 +65,7 @@ export default function AdminDashboardPage() {
       toast({
         title: "Error",
         description: "Failed to load projects",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -97,7 +97,7 @@ export default function AdminDashboardPage() {
       toast({
         title: "Error",
         description: "Failed to delete project",
-        variant: "destructive",
+        variant: "error",
       });
     }
   };
@@ -124,7 +124,7 @@ export default function AdminDashboardPage() {
       toast({
         title: "Error",
         description: "Failed to update project",
-        variant: "destructive",
+        variant: "error",
       });
     }
   };
@@ -449,3 +449,4 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+

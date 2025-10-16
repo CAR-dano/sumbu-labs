@@ -171,7 +171,7 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
         toast({
           title: "Error",
           description: "At least one category is required",
-          variant: "destructive",
+          variant: "error",
         });
         return;
       }
@@ -213,7 +213,7 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
       toast({
         title: "Error",
         description: "Upload failed",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setUploading(false);
@@ -240,7 +240,7 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
       toast({
         title: "Error",
         description: "Upload failed",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setUploading(false);
@@ -264,7 +264,7 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
         toast({
           title: "Validation Error",
           description: validation.error.issues[0].message,
-          variant: "destructive",
+          variant: "error",
         });
         setLoading(false);
         return;
@@ -297,7 +297,7 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
         title: "Error",
         description:
           error instanceof Error ? error.message : "Something went wrong",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -964,3 +964,4 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
     </div>
   );
 }
+

@@ -55,7 +55,7 @@ export default function AdminSidebar() {
       toast({
         title: "Error",
         description: "Failed to logout",
-        variant: "destructive",
+        variant: "error",
       });
     }
   };
@@ -238,3 +238,4 @@ export default function AdminSidebar() {
     </>
   );
 }
+

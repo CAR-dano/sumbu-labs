@@ -106,7 +106,7 @@ export default function BriefDetailPage({
       toast({
         title: "Error",
         description: "Failed to load brief",
-        variant: "destructive",
+        variant: "error",
       });
       router.push("/admin/briefs");
     } finally {
@@ -138,7 +138,7 @@ export default function BriefDetailPage({
       toast({
         title: "Error",
         description: "Failed to update brief",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setUpdating(false);
@@ -165,7 +165,7 @@ export default function BriefDetailPage({
       toast({
         title: "Error",
         description: "Failed to delete brief",
-        variant: "destructive",
+        variant: "error",
       });
       setDeleting(false);
     }

@@ -78,11 +78,6 @@ export const projectUpdateSchema = projectSchema.partial().extend({
     .optional(),
 });
 
-export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
 export type ProjectInput = z.infer<typeof projectSchema>;
 export type ProjectCreateInput = z.infer<typeof projectCreateSchema>;
 
@@ -150,6 +145,5 @@ export const briefUpdateSchema = z.object({
 
 export type BriefSubmissionInput = z.infer<typeof briefSubmissionSchema>;
 export type BriefUpdateInput = z.infer<typeof briefUpdateSchema>;
-export type LoginInput = z.infer<typeof loginSchema>;
 export type ImageData = z.infer<typeof imageSchema>;
 export type LinksData = z.infer<typeof linksSchema>;

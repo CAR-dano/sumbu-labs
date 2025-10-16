@@ -173,3 +173,4 @@ export default function DarkVeil({
   ]);
   return <canvas ref={ref} className=" w-full h-full block absolute inset-0" />;
 }
+

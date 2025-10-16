@@ -231,7 +231,7 @@ export default function BriefForm() {
       toast({
         title: "Error",
         description: "Invalid submission",
-        variant: "destructive",
+        variant: "error",
       });
       return;
     }
@@ -242,7 +242,7 @@ export default function BriefForm() {
       toast({
         title: "Error",
         description: "Please take your time to fill the form",
-        variant: "destructive",
+        variant: "error",
       });
       return;
     }
@@ -276,7 +276,7 @@ export default function BriefForm() {
         title: "Error",
         description:
           error instanceof Error ? error.message : "Failed to submit brief",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setSubmitting(false);
@@ -739,3 +739,4 @@ export default function BriefForm() {
     </div>
   );
 }
+

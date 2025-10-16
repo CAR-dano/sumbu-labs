@@ -79,8 +79,10 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       updateData.categories = data.categories;
     }
 
-    // Track who updated
-    updateData.updatedBy = user.memberId;
+    // Track who updated - only if user is a team member (not admin)
+    if ("memberId" in user) {
+      updateData.updatedBy = user.memberId;
+    }
 
     const project = await Project.findByIdAndUpdate(id, updateData, {
       new: true,

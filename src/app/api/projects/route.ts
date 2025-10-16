@@ -102,11 +102,18 @@ export async function POST(request: NextRequest) {
     // Generate unique slug
     const slug = await generateUniqueSlug(data.title);
 
-    const project = await Project.create({
+    // Prepare project data
+    const projectData: Record<string, unknown> = {
       ...data,
       slug,
-      createdBy: user.memberId,
-    });
+    };
+
+    // Track who created - only if user is a team member (not admin)
+    if ("memberId" in user) {
+      projectData.createdBy = user.memberId;
+    }
+
+    const project = await Project.create(projectData);
 
     return NextResponse.json(project, { status: 201 });
   } catch (error) {

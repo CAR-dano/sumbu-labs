@@ -36,3 +36,4 @@ const Slogan = () => {
 };
 
 export default Slogan;
+

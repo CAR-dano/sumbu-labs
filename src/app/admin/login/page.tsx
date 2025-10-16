@@ -35,14 +35,14 @@ export default function TeamLoginPage() {
         toast({
           title: "Error",
           description: "Failed to load team members",
-          variant: "destructive",
+          variant: "error",
         });
       }
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to connect to server",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setLoadingMembers(false);
@@ -80,7 +80,7 @@ export default function TeamLoginPage() {
         toast({
           title: "Access Denied",
           description: data.error || "Invalid PIN",
-          variant: "destructive",
+          variant: "error",
         });
         setPin("");
         return;
@@ -98,7 +98,7 @@ export default function TeamLoginPage() {
       toast({
         title: "Connection Error",
         description: "Unable to reach authentication server",
-        variant: "destructive",
+        variant: "error",
       });
       setPin("");
     } finally {

@@ -13,6 +13,14 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Check if this is a team member JWT (not admin)
+    if (!("memberId" in auth)) {
+      return NextResponse.json(
+        { error: "Invalid token type" },
+        { status: 403 }
+      );
+    }
+
     await connectDB();
 
     const member = await TeamMember.findById(auth.memberId)

@@ -64,7 +64,7 @@ export default function NewTeamMemberPage() {
       toast({
         title: "Error",
         description: "Failed to load roles",
-        variant: "destructive",
+        variant: "error",
       });
     }
   }, [toast]);
@@ -97,7 +97,7 @@ export default function NewTeamMemberPage() {
       toast({
         title: "Validation Error",
         description: "Please fill in all required fields",
-        variant: "destructive",
+        variant: "error",
       });
       return;
     }
@@ -106,7 +106,7 @@ export default function NewTeamMemberPage() {
       toast({
         title: "Validation Error",
         description: "PIN must be exactly 6 digits",
-        variant: "destructive",
+        variant: "error",
       });
       return;
     }
@@ -115,7 +115,7 @@ export default function NewTeamMemberPage() {
       toast({
         title: "Validation Error",
         description: "PINs do not match",
-        variant: "destructive",
+        variant: "error",
       });
       return;
     }
@@ -124,7 +124,7 @@ export default function NewTeamMemberPage() {
       toast({
         title: "Validation Error",
         description: "PIN must contain only numbers",
-        variant: "destructive",
+        variant: "error",
       });
       return;
     }
@@ -155,7 +155,7 @@ export default function NewTeamMemberPage() {
         toast({
           title: "Error",
           description: data.error || "Failed to create team member",
-          variant: "destructive",
+          variant: "error",
         });
         return;
       }
@@ -170,7 +170,7 @@ export default function NewTeamMemberPage() {
       toast({
         title: "Error",
         description: "Failed to connect to server",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setLoading(false);

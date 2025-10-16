@@ -317,3 +317,4 @@ const MetaBalls: React.FC<MetaBallsProps> = ({
 };
 
 export default MetaBalls;
+

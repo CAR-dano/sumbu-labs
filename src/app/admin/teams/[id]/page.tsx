@@ -105,7 +105,7 @@ export default function TeamMemberDetailPage() {
       toast({
         title: "Error",
         description: "Failed to load roles",
-        variant: "destructive",
+        variant: "error",
       });
     }
   }, [toast]);
@@ -134,7 +134,7 @@ export default function TeamMemberDetailPage() {
         toast({
           title: "Error",
           description: "Failed to load team member",
-          variant: "destructive",
+          variant: "error",
         });
         router.push("/admin/teams");
       }
@@ -142,7 +142,7 @@ export default function TeamMemberDetailPage() {
       toast({
         title: "Error",
         description: "Failed to connect to server",
-        variant: "destructive",
+        variant: "error",
       });
       router.push("/admin/teams");
     } finally {
@@ -188,7 +188,7 @@ export default function TeamMemberDetailPage() {
       toast({
         title: "Permission Denied",
         description: "You don't have permission to edit this member",
-        variant: "destructive",
+        variant: "error",
       });
       setIsEditMode(false); // Force exit edit mode
       return;
@@ -199,7 +199,7 @@ export default function TeamMemberDetailPage() {
         toast({
           title: "Validation Error",
           description: "PIN must be exactly 6 digits",
-          variant: "destructive",
+          variant: "error",
         });
         return;
       }
@@ -208,7 +208,7 @@ export default function TeamMemberDetailPage() {
         toast({
           title: "Validation Error",
           description: "PINs do not match",
-          variant: "destructive",
+          variant: "error",
         });
         return;
       }
@@ -217,7 +217,7 @@ export default function TeamMemberDetailPage() {
         toast({
           title: "Validation Error",
           description: "PIN must contain only numbers",
-          variant: "destructive",
+          variant: "error",
         });
         return;
       }
@@ -256,7 +256,7 @@ export default function TeamMemberDetailPage() {
         toast({
           title: "Error",
           description: data.error || "Failed to update team member",
-          variant: "destructive",
+          variant: "error",
         });
         return;
       }
@@ -273,7 +273,7 @@ export default function TeamMemberDetailPage() {
       toast({
         title: "Error",
         description: "Failed to connect to server",
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setSaving(false);
@@ -556,7 +556,7 @@ export default function TeamMemberDetailPage() {
       toast({
         title: "Access Denied",
         description: "You don't have permission to edit this profile",
-        variant: "destructive",
+        variant: "error",
       });
     }, 0);
     return null; // Return nothing while redirecting

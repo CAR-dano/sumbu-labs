@@ -9,10 +9,12 @@ if (!JWT_SECRET) {
 }
 
 export interface JwtPayload {
-  memberId: string;
-  fullName: string;
-  category: "Core" | "Member";
-  role: string;
+  // For team member login
+  memberId?: string;
+  fullName?: string;
+  category?: "Core" | "Member";
+  role?: string;
+  // Standard JWT fields
   iat?: number;
   exp?: number;
 }
