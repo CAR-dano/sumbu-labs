@@ -66,6 +66,7 @@ export default function TeamMemberDetailPage() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [showPinChange, setShowPinChange] = useState(false);
   const [skillInput, setSkillInput] = useState("");
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     nickname: "",
@@ -171,6 +172,45 @@ export default function TeamMemberDetailPage() {
       ...formData,
       skills: formData.skills.filter((s) => s !== skill),
     });
+  };
+
+  const uploadProfileImage = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "teams");
+
+    const res = await fetch("/api/uploads/image", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error("Upload failed");
+
+    const data = await res.json();
+    return data.file.url;
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const url = await uploadProfileImage(file);
+      setFormData({ ...formData, photoUrl: url });
+      toast({
+        title: "Success",
+        description: "Profile photo uploaded successfully",
+      });
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to upload photo",
+        variant: "error",
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   // Permission logic:
@@ -625,29 +665,43 @@ export default function TeamMemberDetailPage() {
                 <p className="text-xs uppercase tracking-wider text-white/40 font-medium">
                   Profile Picture
                 </p>
-                <div className="relative group">
-                  {formData.photoUrl ? (
-                    <div className="w-32 h-32 rounded-2xl overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-400/60 transition-all duration-300">
-                      <Image
-                        src={formData.photoUrl}
-                        alt="Avatar"
-                        width={128}
-                        height={128}
-                        className="w-full h-full object-cover"
-                      />
+                <label htmlFor="photoUpload" className="cursor-pointer">
+                  <div className="relative group">
+                    {formData.photoUrl ? (
+                      <div className="w-32 h-32 rounded-2xl overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-400/60 transition-all duration-300">
+                        <Image
+                          src={formData.photoUrl}
+                          alt="Avatar"
+                          width={128}
+                          height={128}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 ring-2 ring-white/10 flex items-center justify-center group-hover:ring-purple-500/50 transition-all duration-300">
+                        <UserCircle className="w-20 h-20 text-white/30" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      {uploading ? (
+                        <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <Upload className="w-8 h-8 text-white" />
+                      )}
                     </div>
-                  ) : (
-                    <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 ring-2 ring-white/10 flex items-center justify-center group-hover:ring-purple-500/50 transition-all duration-300">
-                      <UserCircle className="w-20 h-20 text-white/30" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-black/40 backdrop-blur-sm rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer">
-                    <Upload className="w-8 h-8 text-white" />
                   </div>
-                </div>
+                </label>
+                <Input
+                  id="photoUpload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  disabled={uploading}
+                  className="sr-only"
+                />
                 <div className="space-y-2 w-full">
                   <Label htmlFor="photoUrl" className="text-white/70 text-xs">
-                    Photo URL
+                    Photo URL (or upload above)
                   </Label>
                   <Input
                     id="photoUrl"
@@ -656,6 +710,7 @@ export default function TeamMemberDetailPage() {
                       setFormData({ ...formData, photoUrl: e.target.value })
                     }
                     placeholder="https://..."
+                    disabled={uploading}
                     className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
                   />
                 </div>

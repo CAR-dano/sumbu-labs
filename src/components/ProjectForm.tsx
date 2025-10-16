@@ -184,11 +184,22 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
     }
   };
 
-  const uploadFile = async (file: File): Promise<string> => {
+  const uploadFile = async (
+    file: File,
+    folder?: string
+  ): Promise<{
+    url: string;
+    width?: number;
+    height?: number;
+    mime?: string;
+  }> => {
     const formData = new FormData();
     formData.append("file", file);
+    if (folder) {
+      formData.append("folder", folder);
+    }
 
-    const res = await fetch("/api/uploads", {
+    const res = await fetch("/api/uploads/image", {
       method: "POST",
       body: formData,
     });
@@ -196,7 +207,12 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
     if (!res.ok) throw new Error("Upload failed");
 
     const data = await res.json();
-    return data.url;
+    return {
+      url: data.file.url,
+      width: data.file.width,
+      height: data.file.height,
+      mime: data.file.mime,
+    };
   };
 
   const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -205,9 +221,23 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
 
     setUploading(true);
     try {
-      const url = await uploadFile(file);
-      setCoverPreview(url);
-      setValue("coverImage", { url });
+      // Generate slug from title for folder name
+      const projectSlug = watch("title")
+        ? watch("title")
+            .toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^\w\-]/g, "")
+        : "untitled";
+      const folder = `projects/${projectSlug}`;
+
+      const result = await uploadFile(file, folder);
+      setCoverPreview(result.url);
+      setValue("coverImage", {
+        url: result.url,
+        width: result.width,
+        height: result.height,
+        format: result.mime,
+      });
       toast({ title: "Success", description: "Cover image uploaded" });
     } catch {
       toast({
@@ -228,10 +258,26 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
 
     setUploading(true);
     try {
-      const urls = await Promise.all(files.map((file) => uploadFile(file)));
+      // Generate slug from title for folder name
+      const projectSlug = watch("title")
+        ? watch("title")
+            .toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^\w\-]/g, "")
+        : "untitled";
+      const folder = `projects/${projectSlug}/gallery`;
+
+      const results = await Promise.all(
+        files.map((file) => uploadFile(file, folder))
+      );
       const newGallery = [
         ...(watch("gallery") || []),
-        ...urls.map((url) => ({ url })),
+        ...results.map((r) => ({
+          url: r.url,
+          width: r.width,
+          height: r.height,
+          format: r.mime,
+        })),
       ];
       setValue("gallery", newGallery);
       setGalleryPreviews(newGallery.map((g) => g.url));
@@ -964,4 +1010,3 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
     </div>
   );
 }
-

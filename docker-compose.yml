@@ -15,7 +15,7 @@ services:
       - "5000:5000"
     volumes:
       # Mount uploads folder agar persisten
-      - ./public/uploads:/app/public/uploads
+      - /var/www/sumbu-labs/images:/var/www/sumbu-labs/images
     environment:
       NODE_ENV: production
       PORT: 5000
@@ -23,4 +23,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_COOKIE_NAME: ${ADMIN_COOKIE_NAME:-sb_admin_token}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000}
+      IMAGE_ROOT: /var/www/sumbu-labs/images
+      IMAGE_BASE_URL: https://sumbu.xyz/images
+    user: "1000:1000"
     restart: unless-stopped
