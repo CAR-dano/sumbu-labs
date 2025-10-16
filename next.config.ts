@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: "standalone",
+  // output: "standalone", // Disable standalone untuk Docker
   images: {
     remotePatterns: [
       {
@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+    unoptimized: true, // Disable image optimization untuk uploads
   },
   experimental: {
     optimizePackageImports: ["@next/font"],
