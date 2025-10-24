@@ -134,14 +134,14 @@ export default function ProjectsPage() {
               Our Projects
             </h1>
             <p className="hero-text max-w-3xl mx-auto text-base sm:text-lg">
-              We craft{" "}
+              We build{" "}
               <span className="highlight">
-                research-driven digital products
+                research-driven digital experiences
               </span>{" "}
-              that blend innovative design, robust development, and
-              human-centered thinking. From immersive VR experiences to
-              blockchain solutions, each project reflects our commitment to{" "}
-              <span className="highlight">excellence</span> and{" "}
+              that fuse cutting-edge design, scalable development, and
+              human-centered innovation. From intelligent software platforms to
+              blockchain ecosystems, every product we craft reflects our pursuit
+              of <span className="highlight">excellence</span> and lasting{" "}
               <span className="highlight">impact</span>.
             </p>
           </div>
@@ -203,4 +203,3 @@ export default function ProjectsPage() {
     </div>
   );
 }
-
