@@ -1,4 +1,7 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import {
   motion,
   useMotionValue,
@@ -29,8 +32,8 @@ const RollingGallery: React.FC<RollingGalleryProps> = ({
 }) => {
   const galleryImages = images.length > 0 ? images : IMGS;
 
-  const [isScreenSizeSm, setIsScreenSizeSm] = useState<boolean>(
-    window.innerWidth <= 640
+  const [isScreenSizeSm, setIsScreenSizeSm] = useState<boolean>(() =>
+    typeof window !== "undefined" ? window.innerWidth <= 640 : false
   );
   useEffect(() => {
     const handleResize = () => setIsScreenSizeSm(window.innerWidth <= 640);
@@ -156,11 +159,15 @@ const RollingGallery: React.FC<RollingGalleryProps> = ({
                 }deg) translateZ(${radius}px)`,
               }}
             >
-              <img
-                src={url}
-                alt="gallery"
-                className="pointer-events-none h-full w-auto rounded-[15px] border-[3px] border-white object-cover transition-transform duration-300 ease-out group-hover:scale-105 sm:h-[120px] sm:w-[200px] md:h-[150px] md:w-[250px]"
-              />
+              <div className="relative h-full w-full">
+                <Image
+                  src={url}
+                  alt="gallery"
+                  fill
+                  sizes="(max-width: 640px) 200px, (max-width: 768px) 250px, 300px"
+                  className="pointer-events-none rounded-[15px] border-[3px] border-white object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                />
+              </div>
             </div>
           ))}
         </motion.div>

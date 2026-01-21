@@ -1,6 +1,5 @@
 import React from "react";
-import Lanyard, { FiveLanyards } from "../ReactBits/Lanyard/Lanyard";
-import RollingGallery from "../ReactBits/RollingGallery/RollingGallery";
+import { FiveLanyards } from "../ReactBits/Lanyard/Lanyard";
 import { AppleCardsCarouselDemo } from "../Carousel";
 
 const Team = () => {

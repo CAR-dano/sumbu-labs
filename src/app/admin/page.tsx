@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { IProject } from "@/types/project";
-import { motion } from "framer-motion";
 import {
   Search,
   Plus,
@@ -29,8 +28,6 @@ import {
   ChevronRight,
   Eye,
   EyeOff,
-  Layers,
-  TrendingUp,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {

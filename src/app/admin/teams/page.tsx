@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,6 @@ import {
   PowerOff,
   Shield,
   User,
-  Zap,
-  UserCircle,
 } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 import { motion } from "framer-motion";
@@ -122,77 +120,7 @@ export default function AdminTeamsPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  // Helper function to get link icon component
-  const getLinkIcon = (iconName: string) => {
-    const iconMap: Record<string, React.ReactNode> = {
-      github: (
-        <LucideIcons.Github className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      linkedin: (
-        <LucideIcons.Linkedin className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      twitter: (
-        <LucideIcons.Twitter className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      youtube: (
-        <LucideIcons.Youtube className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      instagram: (
-        <LucideIcons.Instagram className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      facebook: (
-        <LucideIcons.Facebook className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      figma: (
-        <LucideIcons.Figma className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      "file-text": (
-        <LucideIcons.FileText className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      "book-open": (
-        <LucideIcons.BookOpen className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      palette: (
-        <LucideIcons.Palette className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      dribbble: (
-        <LucideIcons.Dribbble className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      code: (
-        <LucideIcons.Code className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      "message-circle": (
-        <LucideIcons.MessageCircle className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      "message-square": (
-        <LucideIcons.MessageSquare className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      send: (
-        <LucideIcons.Send className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      music: (
-        <LucideIcons.Music className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      tv: (
-        <LucideIcons.Tv className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      "help-circle": (
-        <LucideIcons.HelpCircle className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-      globe: (
-        <LucideIcons.Globe className="w-4 h-4 text-gray-600 group-hover:text-purple-600 transition-colors" />
-      ),
-    };
-
-    return iconMap[iconName] || iconMap.globe;
-  };
-
-  useEffect(() => {
-    fetchCurrentUser();
-    fetchMembers();
-  }, []);
-
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser = useCallback(async () => {
     try {
       const res = await fetch("/api/auth/me");
       if (res.ok) {
@@ -202,9 +130,9 @@ export default function AdminTeamsPage() {
     } catch (error) {
       console.error("Failed to fetch current user:", error);
     }
-  };
+  }, []);
 
-  const fetchMembers = async () => {
+  const fetchMembers = useCallback(async () => {
     try {
       const res = await fetch("/api/teams");
       const data = await res.json();
@@ -218,6 +146,7 @@ export default function AdminTeamsPage() {
         });
       }
     } catch (error) {
+      console.error("Failed to fetch team members:", error);
       toast({
         title: "Error",
         description: "Failed to connect to server",
@@ -226,7 +155,12 @@ export default function AdminTeamsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchCurrentUser();
+    fetchMembers();
+  }, [fetchCurrentUser, fetchMembers]);
 
   const toggleMemberStatus = async (id: string, currentStatus: boolean) => {
     if (currentUser?.category !== "Core") {
@@ -259,6 +193,7 @@ export default function AdminTeamsPage() {
         });
       }
     } catch (error) {
+      console.error("Failed to update member status:", error);
       toast({
         title: "Error",
         description: "Failed to connect to server",

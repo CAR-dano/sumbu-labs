@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -15,7 +15,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
   const [fadeOut, setFadeOut] = useState(false);
   const [canSkip, setCanSkip] = useState(false);
 
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     if (canSkip) {
       setFadeOut(true);
       setTimeout(() => {
@@ -23,13 +23,16 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         onComplete();
       }, 300);
     }
-  };
+  }, [canSkip, onComplete]);
 
-  const handleKeyPress = (e: KeyboardEvent) => {
+  const handleKeyPress = useCallback(
+    (e: KeyboardEvent) => {
     if (e.key === " " || e.key === "Enter" || e.key === "Escape") {
       handleSkip();
     }
-  };
+    },
+    [handleSkip]
+  );
 
   useEffect(() => {
     // Prevent body scrolling
@@ -62,7 +65,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       document.removeEventListener("keydown", handleKeyPress);
       document.body.classList.remove("splash-active");
     };
-  }, [onComplete, duration]);
+  }, [duration, handleKeyPress, handleSkip, onComplete]);
 
   if (!isVisible) return null;
 

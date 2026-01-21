@@ -1,12 +1,8 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+const getJwtSecret = () => process.env.JWT_SECRET;
 const ADMIN_COOKIE_NAME = process.env.ADMIN_COOKIE_NAME || "sb_admin_token";
-
-if (!JWT_SECRET) {
-  throw new Error("Please define JWT_SECRET in .env.local");
-}
 
 export interface JwtPayload {
   // For team member login
@@ -23,12 +19,22 @@ export function signJwt(
   payload: JwtPayload,
   expiresIn: string | number = "7d"
 ): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn } as jwt.SignOptions);
+  const jwtSecret = getJwtSecret();
+  if (!jwtSecret) {
+    throw new Error("Please define JWT_SECRET in .env.local");
+  }
+
+  return jwt.sign(payload, jwtSecret, { expiresIn } as jwt.SignOptions);
 }
 
 export function verifyJwt(token: string): JwtPayload | null {
+  const jwtSecret = getJwtSecret();
+  if (!jwtSecret) {
+    return null;
+  }
+
   try {
-    return jwt.verify(token, JWT_SECRET) as JwtPayload;
+    return jwt.verify(token, jwtSecret) as JwtPayload;
   } catch {
     return null;
   }

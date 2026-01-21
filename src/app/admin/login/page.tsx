@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, ArrowRight, UserCircle } from "lucide-react";
 import Image from "next/image";
@@ -21,11 +21,7 @@ export default function TeamLoginPage() {
   const [loadingMembers, setLoadingMembers] = useState(true);
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetchTeamMembers();
-  }, []);
-
-  const fetchTeamMembers = async () => {
+  const fetchTeamMembers = useCallback(async () => {
     try {
       const res = await fetch("/api/auth/team-members");
       const data = await res.json();
@@ -39,6 +35,7 @@ export default function TeamLoginPage() {
         });
       }
     } catch (error) {
+      console.error("Failed to fetch team members:", error);
       toast({
         title: "Error",
         description: "Failed to connect to server",
@@ -47,7 +44,11 @@ export default function TeamLoginPage() {
     } finally {
       setLoadingMembers(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchTeamMembers();
+  }, [fetchTeamMembers]);
 
   const handlePinInput = (digit: string) => {
     if (pin.length < 6) {

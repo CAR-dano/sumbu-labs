@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
-import MetaBalls from "../MetaBalls/MetaBalls";
 
 export interface BentoCardProps {
   color?: string;
@@ -727,9 +727,11 @@ const MagicBento: React.FC<BentoProps> = ({
                 >
                   <div className="card__header flex items-start justify-start mb-4 relative text-white">
                     <div className="card__logo rounded-lg  backdrop-blur-sm w-12 h-12 flex items-center justify-center">
-                      <img
-                        src={card.logoSrc}
-                        alt={card.label}
+                      <Image
+                        src={card.logoSrc || ""}
+                        alt={card.label || ""}
+                        width={48}
+                        height={48}
                         className="w-12 h-12 object-contain"
                       />
                     </div>
@@ -869,9 +871,11 @@ const MagicBento: React.FC<BentoProps> = ({
               >
                 <div className="card__header flex items-start justify-start mb-4 relative text-white">
                   <div className="card__logo  rounded-lg p-2 backdrop-blur-sm w-12 h-12 flex items-center justify-center">
-                    <img
-                      src={card.logoSrc}
-                      alt={card.label}
+                    <Image
+                      src={card.logoSrc || ""}
+                      alt={card.label || ""}
+                      width={32}
+                      height={32}
                       className="w-8 h-8 object-contain"
                     />
                   </div>
